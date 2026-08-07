@@ -1,4 +1,7 @@
 #!/bin/Rscript
+# NOTE: not used..
+# NOTE: not used..
+# NOTE: not used..
 
 # seznam proteinov
 proteins <- read.csv("two_domains.csv")$protein

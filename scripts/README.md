@@ -1,3 +1,5 @@
+> Posodobi glede na kapitana in core.
+
 Skripte so organizirane po fazi analize. Vsak direktorij vsebuje `main.sh`, ki lahko služi kot referenca na vrstni red skript.
 
 [`00_data`](./00_data/): pridobivanje podatkov
@@ -21,7 +23,7 @@ Skripte so organizirane po fazi analize. Vsak direktorij vsebuje `main.sh`, ki l
 
 - [`rmsf_analysis.r`](./02_rmsf/rmsf_analysis.r): zastarelo. Gitignore?
 - [`rmsf_analysis.rmd`](./02_rmsf/rmsf_analysis.rmd): utility. Gitignore?
-- [`rmsf_test.r`](./02_rmsf/rmsf_test.r): REFACTOR, ODSTRANI V2. izvede statistični test nad RMSF-ji domen 
+- [`rmsf_test.r`](./02_rmsf/rmsf_test.r): REFACTOR, ODSTRANI V2. izvede statistični test nad RMSF-ji domen
 - [`rmsf_ratios.r`](./02_rmsf/rmsf_ratios.r): preveri razmerja med notranjo in zunanjo fleksibilnostjo domen.
 
 [`03_phys`](./03_phys/): analize, ki vključujejo več..fizike

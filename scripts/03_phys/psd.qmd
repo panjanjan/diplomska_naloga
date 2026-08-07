@@ -11,7 +11,6 @@ library(ggplot2)
 library(patchwork)
 ```
 
-
 ```{r}
 #| code-summary: datoteke
 source(file.path(Sys.getenv("ROOT"), "scripts", "utils.r"))
@@ -31,6 +30,10 @@ read.csv(data[1]) |> head()
 #| code-summary: psd funkcija
 psd <- function(x, protein, replicate) {
     n <- length(x)
+
+    # nastavimo vse razdalje relativno glede na prvo
+    # NOTE: mogoče bi to naredil že v shranjenih razdaljah..?
+    x <- x - x[1]
 
     # frekvenca vzorčenja: kolikokrat na časovno enoto vzorčimo (1 ps)
     dt_sec <- 1 * 1e-12
@@ -52,9 +55,11 @@ psd <- function(x, protein, replicate) {
     half_n <- 1 + floor(n / 2)
     freq <- seq(0, by = df, length.out = half_n)
 
-    # ker merimo 1.001 ns, lahko pretvorimo frekvence iz Hz v ns
-    # 999000999 / s = 999000999 / 1e+9 ns = 0.999001 ns^-1
+    # ker merimo 1.001 ns, lahko pretvorimo frekvence iz Hz v ns (nHz...)
+    # 999000999 / s = 999000999 / 1e+9 ns = 0.999001 ns^-1 = 0.999001 nHz
+    # NOTE: brez DC komponente
     freq_ns <- freq / 1e+9
+    freq_ns <- freq_ns[-1]
 
     # predpostavka DFT je stacionarnost podatkov. odstranjevanje linearnega trenda
     fit <- lm(x ~ seq_along(x))
@@ -69,13 +74,14 @@ psd <- function(x, protein, replicate) {
     # TODO: spectral leakage?
 
     # power density estimation
+    # NOTE: brez DC komponente
     fft_out <- fft(x_scaled)
-    power <- (Mod(fft_out)^2)[1:half_n] |> scale_it()
+    power <- (Mod(fft_out)^2)[2:half_n] |> scale_it()
 
     # --------------------------------------------------------
 
     df <- data.frame(time = 1:n, distances = x)
-    dfp <- data.frame(frequency = freq_ns[-1], pwr = power[-1]) # BREZ DC KOMPONENTE
+    dfp <- data.frame(frequency = freq_ns, pwr = power)
 
     plot_scale <- 10
 
@@ -102,7 +108,7 @@ psd <- function(x, protein, replicate) {
         ggplot(aes(x = frequency, ymin = 0, ymax = pwr)) +
         geom_linerange() +
         # labs(x = "frekvenca (Hz)", y = "moč", title = "Power Spectral Density (brez DC komponente)") +
-        labs(x = "frekvenca (Hz)", y = "moč") +
+        labs(x = "frekvenca (nHz)", y = "moč") +
         theme_bw(base_size = plot_scale)
         # theme_bw()
 
@@ -120,7 +126,7 @@ psd <- function(x, protein, replicate) {
 #| column: screen-inset-shaded
 #| layout-ncol: 3
 #| code-fold: false
- 
+
 for (dfile in data) {
     d <- read.csv(dfile)
     protein <- sub("_dist.csv", "", basename(dfile))

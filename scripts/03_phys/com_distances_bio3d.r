@@ -1,4 +1,8 @@
 #!/bin/Rscript
+# Proteinsko domeno lahko predstavimo kot masni center atomov, ki jo sestavljajo.
+# Meddomensko gibanje lahko opazimo ob relativno velikih premikih teh masnih
+# centrov skozi celotno trajektorijo.
+# ------------------------------------------------------------------------------
 library(bio3d)
 library(parallel)
 

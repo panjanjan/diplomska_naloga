@@ -6,6 +6,7 @@
 # protein3 start1 end1 start2 end2
 # ...
 library(magrittr)
+setwd(Sys.getenv("ROOT"))
 
 out <- "two_domains.csv"
 data <- read.csv("sword_results_clean.csv")

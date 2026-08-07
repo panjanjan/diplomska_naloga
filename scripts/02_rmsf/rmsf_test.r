@@ -5,21 +5,21 @@
 # in jih razdeli na dva dela glede na domeno. S statističnim testom primerja
 # ali se RMSF vrednosti med domenama razlikujejo.
 #
-# Ob statistični značilnosti lahko pričakujemo meddomensko gibanje.*
-#
-# *ne čisto.. glej rmsf_ratios.r
-
+# Ob statistični značilnosti "lahko" pričakujemo meddomensko gibanje.
 # ------------------------------------------------------------------------------
 library(bio3d)
 library(parallel)
 library(magrittr)
 
+setwd(Sys.getenv("ROOT"))
+source("./scripts/utils.r")
+
 # Rezultate testov shrani v 'results_target'.
 # Replikate proteinov, ki imajo statistično značilne razlike shrani v 'replicates_target'.
 # Imena proteinov, katerih vsi trije replikati passajo, shrani v 'proteins_target'
-results_target <- "rmsf_test_results.csv"
+results_target    <- "rmsf_test_results.csv"
 replicates_target <- "rmsf_test_replicates.txt"
-proteins_target <- "rmsf_test_proteins.txt"
+proteins_target   <- "rmsf_test_proteins.txt"
 
 # meja za p-vrednosti
 cutoff <- 0.05
@@ -28,7 +28,7 @@ cutoff <- 0.05
 n_cores <- min(detectCores() - 1, 10)
 
 # NOTE: lahko bi predhodno ustvaril poravnane trajektorije
-data <- load_data("all")
+data  <- load_data(c("pdb", "traj", "domains"))
 n_all <- nrow(data$domains)
 
 # ------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ run <- function(i) {
     protein <- data$domains$protein[i]
 
     dcdfiles <- grep(protein, data$traj, value = TRUE)
-    pdbfile <- grep(protein, data$pdb, value = TRUE)
+    pdbfile  <- grep(protein, data$pdb, value = TRUE)
     assertthat::are_equal(length(dcdfiles), 3)
     assertthat::are_equal(length(pdbfile), 1)
 

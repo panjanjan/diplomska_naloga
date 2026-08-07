@@ -3,6 +3,7 @@
 # pomembno za delovanje SWORD2
 library(stringr)
 library(bio3d)
+setwd(Sys.getenv("ROOT"))
 
 old_dir <- "atlas_db/PDB"
 new_dir <- "atlas_db/PDB_chained"

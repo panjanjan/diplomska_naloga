@@ -1,2 +1,2 @@
 # setwd(Sys.getenv("ROOT"))
-source("scripts/utils.r")
+source("/home/jan/Documents/diplomska_naloga/scripts/utils.r")

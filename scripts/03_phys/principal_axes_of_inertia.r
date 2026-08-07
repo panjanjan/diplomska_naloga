@@ -1,7 +1,8 @@
 #!/bin/Rscript
 # izračuna kote med vztrajnostnimi osemi domen
+# ------------------------------------------------------------------------------
 library(bio3d)
-# library(plotly)
+#library(plotly)
 
 setwd(Sys.getenv("ROOT"))
 source("./scripts/utils.r")
@@ -12,8 +13,7 @@ n_all <- nrow(domains)
 target <- file.path("atlas_db", "PAI")
 if (!dir.exists(target)) dir.create(target)
 
-### funkcije #################################################################
-
+# ------------------------------------------------------------------------------
 # * bio3d objekti imajo koordinate v obliki [x1,y2,z1,x2,...], kar je nadležno
 # * pretvori koordinate v n×3 matriko, n×(x,y,z), tako kot vrne `bio3d::com.xyz`
 matrix_coords <- function(coords) {
@@ -266,8 +266,7 @@ run_frame_PLOT <- function(frame, inertia_tensors, original_coords, centered_coo
     fig
 }
 
-### main #####################################################################
-
+# ------------------------------------------------------------------------------
 n_cores <- min(detectCores() - 1, 10)
 cat("using", n_cores, "cores\n")
 mclapply(1:n_all, run, mc.cores = n_cores)

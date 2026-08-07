@@ -1,5 +1,7 @@
 #!/bin/Rscript
 # izpiše meje domen za dani protein
+setwd(Sys.getenv("ROOT"))
+source("./scripts/utils.r")
 
 d <- load_data("domains")
 p <- {
