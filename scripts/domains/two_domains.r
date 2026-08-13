@@ -1,4 +1,6 @@
 #!/bin/Rscript
+# WARN: poženi da vidiš če dela pravilno
+
 # naredi csv, ki hrani informacije o domenah
 #
 # protein1 start1 end1 start2 end2
@@ -6,11 +8,11 @@
 # protein3 start1 end1 start2 end2
 # ...
 library(magrittr)
-library(here)
-source("scripts/utils.r")
 
-out <- file.path(root, "two_domains.csv")
-data <- read.csv(file.path(root, "sword_results_clean.csv"))
+source(here::here("scripts", "utils.r")
+
+out <- paths$domains
+data <- read.csv(here::here("sword_results_clean.csv"))
 
 # izloči tiste, ki imajo samo 2 domeni
 # ohrani ime proteina in meje domen

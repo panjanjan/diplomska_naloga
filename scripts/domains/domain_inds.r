@@ -1,7 +1,7 @@
 #!/bin/Rscript
 # izpiše meje domen za dani protein
 library(here)
-source("scripts/utils.r")
+source(file.path(here(), "scripts", "utils.r")
 
 d <- read.csv(paths$domains)
 

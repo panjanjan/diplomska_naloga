@@ -1,11 +1,11 @@
-root <- Sys.getenv("ROOT")
-
 paths <- list(
-    traj    = file.path(root, "atlas_db/trajectories"),
-    pdb     = file.path(root, "atlas_db/PDB"),
-    domains = file.path(root, "two_domains.csv"),
-    dist    = file.path(root, "atlas_db/COM"),
-    angles  = file.path(root, "atlas_db/PAI")
+    sword       = here::here("sword_results.csv")
+    sword_clean = here::here("sword_results_clean.csv")
+    domains     = here::here("two_domains.csv"),
+    traj        = here::here("atlas_db", "trajectories"),
+    pdb         = here::here("atlas_db", "PDB"),
+    dist        = here::here("outputs", "COM"),
+    angles      = here::here("outputs", "PAI")
 )
 
 # ustvari inverted window za plottanje

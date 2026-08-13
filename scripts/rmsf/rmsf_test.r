@@ -1,25 +1,31 @@
 #!/bin/Rscript
+# WARN: poženi, da vidiš če dela pravilno
+
 # Nad proteini izvede statistična testa t in ks.
 #
-# Trajektorije replikatov fiksira na prvo domeno, nato izračuna RMSF vrednosti
-# in jih razdeli na dva dela glede na domeno. S statističnim testom primerja
-# ali se RMSF vrednosti med domenama razlikujejo.
+# Iz trajektorij izračuna RMSF vrednosti in jih razdeli na dva dela glede na domeno.
+# Trajektorije so bile poravnane na prvi frame pred depozicijo v ATLAS bazo.
 #
+# S statističnim testom primerja ali se RMSF vrednosti med domenama razlikujejo.
 # Ob statistični značilnosti "lahko" pričakujemo meddomensko gibanje.
+
+# TODO: 3 selekcije: vse brez H, backbone, C-alpha pri izračunu RMSFjev. Glej inds, run_replicate
+
 # ------------------------------------------------------------------------------
 library(bio3d)
 library(parallel)
 library(magrittr)
 
-setwd(Sys.getenv("ROOT"))
-source("./scripts/utils.r")
+source(here::here("scripts", "utils.r")
 
 # Rezultate testov shrani v 'results_target'.
 # Replikate proteinov, ki imajo statistično značilne razlike shrani v 'replicates_target'.
 # Imena proteinov, katerih vsi trije replikati passajo, shrani v 'proteins_target'
-results_target    <- "rmsf_test_results.csv"
-replicates_target <- "rmsf_test_replicates.txt"
-proteins_target   <- "rmsf_test_proteins.txt"
+out <- list(
+    results    = here::here("outputs", "rmsf_test_results.csv")
+    replicates = here::here("outputs", "rmsf_test_replicates.txt")
+    proteins   = here::here("outputs", "rmsf_test_proteins.txt")
+)
 
 # meja za p-vrednosti
 cutoff <- 0.05
@@ -27,8 +33,13 @@ cutoff <- 0.05
 # število jeder za paralelizacijo
 n_cores <- min(detectCores() - 1, 10)
 
-# NOTE: lahko bi predhodno ustvaril poravnane trajektorije
-data  <- load_data(c("pdb", "traj", "domains"))
+# PDB datotetke, DCD trajektorije, podatki o domenah
+data  <- list(
+    pdb = list.files(paths$pdb, pattern = ".pdb"),
+    traj = list.files(paths$traj, pattern = ".dcd"),
+    domains = read.csv(paths$domains)
+)
+
 n_all <- nrow(data$domains)
 
 # ------------------------------------------------------------------------------
@@ -70,13 +81,7 @@ run <- function(i) {
 run_replicate <- function(dcdfile, pdb, inds) {
     cat(dcdfile, "\n")
     dcd <- read.dcd(dcdfile, verbose = FALSE)
-    aligned <- fit.xyz(
-        fixed       = pdb$xyz,
-        mobile      = dcd,
-        fixed.inds  = inds$xyz,
-        mobile.inds = inds$xyz
-    )
-    rmsf(aligned)
+    rmsf(dcd)
 }
 
 # izvede statistični test nad rmsfji domen
@@ -122,5 +127,6 @@ passed_proteins <- passed_replicates %>%
     grep(3, ., value = TRUE) %>%
     names(.)
 
-write.csv(results, results_target, quote = FALSE, row.names = FALSE)
-writeLines(passed_replicates, replicates_target)
+write.csv(results,            out$results, quote = FALSE, row.names = FALSE)
+writeLines(passed_replicates, out$replicates)
+writeLines(passed_proteins,   out$proteins)
