@@ -2,32 +2,40 @@
 /atlas_db/pdbs.tar.xz
 
 # ne pushat cele baze prosim
-/atlas_db/analysis/*
-/atlas_db/COM/*
-/atlas_db/PAI/*
 /atlas_db/PDB/*
+/atlas_db/PDB_chained/*
 /atlas_db/RMSF/*
-/atlas_db/TRAJ/*
-/atlas_db/tmp/*
-/sword_output/*
+/atlas_db/analysis/*
+/atlas_db/trajectories/*
+
+/outputs/COM/*
+/outputs/PAI/*
+/outputs/PSD/*
+/outputs/sword_output/*
+/outputs/tmp/*
 
 # pustimo en protein, why the hell not
-!atlas_db/analysis/
-!atlas_db/COM/
-!atlas_db/PAI/
 !atlas_db/PDB/
 !atlas_db/PDB_chained/
 !atlas_db/RMSF/
-!atlas_db/TRAJ/
-!sword_output/
-!atlas_db/analysis/1dd3_A*
-!atlas_db/COM/1dd3_A*
-!atlas_db/PAI/1dd3_A*
+!atlas_db/analysis/
+!atlas_db/trajectories/
+
+!outputs/COM/
+!outputs/PAI/
+!outputs/PSD/
+!outputs/sword_output/
+
 !atlas_db/PDB/1dd3_A*
 !atlas_db/PDB_chained/1dd3_A*
 !atlas_db/RMSF/1dd3_A*
-!atlas_db/TRAJ/1dd3_A*
-!sword_output/1dd3_A*
+!atlas_db/analysis/1dd3_A*
+!atlas_db/trajectories/1dd3_A*
+
+!outputs/COM/1dd3_A*
+!outputs/PAI/1dd3_A*
+!outputs/PSD/1dd3_A*
+!outputs/sword_output/1dd3_A*
 
 # ostalo
 frequencies_units.txt
