@@ -16,14 +16,14 @@ library(bio3d)
 library(parallel)
 library(magrittr)
 
-source(here::here("scripts", "utils.r")
+source(here::here("scripts", "utils.r"))
 
 # Rezultate testov shrani v 'results_target'.
 # Replikate proteinov, ki imajo statistično značilne razlike shrani v 'replicates_target'.
 # Imena proteinov, katerih vsi trije replikati passajo, shrani v 'proteins_target'
 out <- list(
-    results    = here::here("outputs", "rmsf_test_results.csv")
-    replicates = here::here("outputs", "rmsf_test_replicates.txt")
+    results    = here::here("outputs", "rmsf_test_results.csv"),
+    replicates = here::here("outputs", "rmsf_test_replicates.txt"),
     proteins   = here::here("outputs", "rmsf_test_proteins.txt")
 )
 
@@ -35,8 +35,8 @@ n_cores <- min(detectCores() - 1, 10)
 
 # PDB datotetke, DCD trajektorije, podatki o domenah
 data  <- list(
-    pdb = list.files(paths$pdb, pattern = ".pdb"),
-    traj = list.files(paths$traj, pattern = ".dcd"),
+    pdb     = list.files(paths$pdb, pattern = ".pdb", full.names = TRUE),
+    traj    = list.files(paths$traj, pattern = ".dcd", full.names = TRUE),
     domains = read.csv(paths$domains)
 )
 
@@ -61,18 +61,35 @@ run <- function(i) {
     rmsf2 <- run_replicate(dcdfiles[2], pdb, inds)
     rmsf3 <- run_replicate(dcdfiles[3], pdb, inds)
 
-    rm(pdb)
+    rm(pdb, inds)
+
+    # WARN: shrani RMSFje če še ne obstajajo
+    out_rmsf <- file.path(paths$rmsf, paste0(protein, "_rmsf.csv"))
+
+    if ((out_rmsf %in% list.files(paths$rmsf, full.names = TRUE)) == FALSE) {
+        print("not yet! saving RMSFs")
+        rmsf_all <- data.frame(
+            R1 = rmsf1,
+            R2 = rmsf2,
+            R3 = rmsf3
+        )
+        write.csv(rmsf_all, out_rmsf, quote = FALSE, row.names = FALSE)
+    } else {
+        print("RMSFs exist!")
+    }
 
     # izvedi testa
     test1 <- run_test(rmsf1, domain_bounds)
     test2 <- run_test(rmsf2, domain_bounds)
     test3 <- run_test(rmsf3, domain_bounds)
 
-    protein_names <- sub(".dcd", "", basename(dcdfiles))
+    rm(rmsf1, rmsf2, rmsf3)
 
     # združi rezultate
+    protein_replicate <- sub(".dcd", "", basename(dcdfiles))
+
     df <- rbind(test1, test2, test3)
-    df <- cbind(protein_names, df)
+    df <- cbind(protein_replicate, df)
 
     df
 }
@@ -118,7 +135,7 @@ results <- mclapply(1:n_all, run, mc.cores = n_cores)
 results <- do.call(rbind, results)
 
 # imena replikatov proteinov ki passajo OBA testa
-passed_replicates <- results[which(results$both_pass), "protein"]
+passed_replicates <- results[which(results$both_pass), "protein_replicate"]
 
 # imena proteinov ki passajo z vsakim replikatom
 passed_proteins <- passed_replicates %>%
