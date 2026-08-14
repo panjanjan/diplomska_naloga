@@ -1,4 +1,4 @@
-> Posodobi glede na kapitana in core.
+> ZASTARELO
 
 [`data`](./data/): pridobivanje podatkov
 
