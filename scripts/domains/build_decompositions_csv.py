@@ -2,6 +2,8 @@
 import csv
 import glob
 import json
+import os
+from pathlib import Path
 
 # zgradil bo CSV iz JSON datotek. vrstice se grupirajo po proteinih in
 # particijah optimalna particija ima vrednost 0. Domain predstavlja
@@ -22,6 +24,7 @@ import json
 #   1a62_A  1      3         1       1      76  1     130<---| alt. 3
 #   1a62_A  1      3         1       2      0   48    94     |
 #
+ROOT = os.getenv("ROOT")
 
 field_names = [
     "protein",
@@ -33,7 +36,8 @@ field_names = [
     "start",
     "end",
 ]
-csv_name = "sword_results.csv"
+
+csv_name = Path(ROOT, "outputs", "sword_results.csv")
 
 
 def domain_bounds(domain) -> tuple[int, int]:
@@ -68,7 +72,7 @@ def process_partition(part) -> list:
 
 def process_report(fname: str) -> list:
     # globalni podatki
-    pname = fname.removeprefix("sword_output/").removesuffix("/SWORD2_summary.json")[:6]
+    pname = fname.removeprefix("outputs/sword_output/").removesuffix("/SWORD2_summary.json")[:6]
     fp = open(fname, "r")
     obj = json.load(fp)
     aidx = obj["Ambiguity index"]
@@ -96,5 +100,3 @@ if __name__ == "__main__":
             report = process_report(fname)
             for line in report:
                 writer.writerow(line)
-
-    # glej decompositions.r ...

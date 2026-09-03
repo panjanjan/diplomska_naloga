@@ -4,13 +4,13 @@
 
 - [`calculate_atlas_size.fish`](./data/calculate_atlas_size.fish): izračuna velikost baze. V primeru da na disku ni dovolj prostora, bo problem naslednji korak.
 - [`download_atlas.fish`](./data/download_atlas.fish): prenese `analysis` del ATLAS MD baze
-- [`extract.fish`](./data/extract.fish): prenešene so zip datoteke. Ker ne potrebujemo vseh vključenih datotek, ta skripta izvleče samo določene glede na parameter. Trenutno so pomembne RMSF (`*_RMSF.tsv`), PDB (`*.pdb`), trajektorije (`*.xtc`) in topologije (`*.tpr`)
+- [`extract.fish`](./data/extract.fish): prenešene so zip datoteke. Ker ne potrebujemo vseh vključenih datotek, ta skripta izvleče samo določene tipe glede na parameter. Trenutno so pomembne RMSF (`*_RMSF.tsv`), PDB (`*.pdb`), trajektorije (`*.xtc`) in topologije (`*.tpr`)
 - [`mdconvert_xtc.fish`](./data/mdconvert_xtc.fish): trajektorije pretvori v format, ki ga je bio3d zmožen prebrati.
 
 [`domains`](./domains/): določanje in izbiranje proteinov s kvalitetnimi dekompozicijami (google SWORD2)
 
-- [`introduce_chain.r`](./data/introduce_chain.r): v PDB datoteke, ki jih sprejme spodnji script, doda podatek o verigi. Ta korak je pomemben, saj SWORD2 drugače ne bo deloval.
-- [`sword2_example.fish`](./domains/sword2_example.fish): da lahko preveriš če ti deluje SWORD2.
+- [`introduce_chain.r`](./domains/introduce_chain.r): v PDB datoteke, ki jih sprejme spodnji script, doda podatek o verigi. Ta korak je pomemben, saj SWORD2 drugače ne bo deloval.
+- [`sword2_example.fish`](./domains/sword2_example.fish): da lahko preveriš če ti deluje SWORD2. NUJNO POPRAVI SPREMENLJIVKE V `.envrc`
 - [`sword2_batch_processor.fish`](./domains/sword2_batch_processor.fish): požene SWORD2 nad proteini, da določi domene in ostale metrike.
 - [`build_decompositions_csv.py`](./domains/build_decompositions_csv.py): iz JSON datotek, ki jih vrne SWORD2, naredi pregleden csv.
 - [`filtering.rmd`](./domains/filtering.rmd): prečisti rezultate, da ohrani proteine s kvalitetnimi in primernimi dekompozicijami za nadaljne analize.

@@ -1,0 +1,13 @@
+
+
+PDB: 1dd3_A_A
+ASSIGNMENT   
+A-index = +
+#D|Min|                                                  BOUNDARIES|   AVERAGE κ|   QUALITY|
+2 |49 |                                                 1-49 50-128|    3.555875|      ****|
+ALTERNATIVES
+#D|Min|                                                  BOUNDARIES|   AVERAGE κ|   QUALITY|
+3 |31 |                                           1-49 50-97 98-128|    3.060824|         *|
+2 |48 |                                           1-49;98-128 50-97|    3.105966|         *|
+
+

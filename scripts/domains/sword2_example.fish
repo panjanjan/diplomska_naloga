@@ -1,25 +1,18 @@
 #!/bin/fish
-# FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-set protein "1a62.pdb"
+set test_dir "TEST_SWORD"
+test -d "$test_dir" || mkdir "$test_dir"
+echo "output: $test_dir"
 
-# dobi ID od trenutnega proteina
-set protein_id (basename "$protein" .pdb)
-echo "$protein_id"
-#> 1a62
-
-# najdi vnos proteina v seznamu baze
-set db_entry (grep "$protein_id" "$ROOT/"atlas_db/2024_11_18_ATLAS_pdb.txt)
-echo "$db_entry"
-#> 1a62_A
+set protein "$ROOT/atlas_db/PDB_chained/1a62_A.pdb"
+echo "protein: $protein"
 
 # dobi uporabljeno verigo
-set chain (string split "_" "$db_entry" -f 2)
-echo "$chain"
-#> A
+set chain (path basename --no-extension $protein | cut -d '_' -f2)
+echo "chain: $chain"
+echo ""
 
-conda activate "$CONDA_ENV_NAME"
-"$SWORD_PATH" -i "$DB/$protein" -o "$SWO" -c "$chain"
+conda activate $SWORD_CONDA_ENV
+
+$SWORD_PATH -i $protein -o $test_dir -c $chain
+
 conda deactivate

@@ -1,5 +1,5 @@
 #!/bin/fish
-# seznam proteinov v bazi, prenesi če še ne obstaja
+# seznam proteinov v bazi. prenesi če še ne obstaja
 if test ! -e "$ROOT/atlas_db/2024_11_18_ATLAS_pdb.txt"
     curl \
         "https://www.dsimb.inserm.fr/ATLAS/data/download/distributions/2024_11_18_ATLAS_pdb.txt"\
@@ -15,7 +15,7 @@ set failed 0
 # izračuna velikost kompleta analysis podatkov za vsak protein
 for protein in $files
     set i (math "$i + 1")
-    echo -ne "\r\x1b[K[$i/$n] Checking $protein. Total: $total_mb MB"
+    echo -ne "\r[$i/$n] Checking: $protein. Total: $total_mb MB"
 
     # https://www.dsimb.inserm.fr/ATLAS/api/docs#/Downloads/download_atlas_analysis_ATLAS_analysis__pdb_chain__get
     set url "https://www.dsimb.inserm.fr/ATLAS/api/ATLAS/analysis/$protein"
@@ -40,4 +40,4 @@ echo ""
 echo "Total: $total_mb MB"
 echo "Failed: $failed. Check failed.log"
 
-echo "Total: $total_mb MB" > "db_size.txt"
+echo "Total: $total_mb MB" > "atlas_db_size.txt"

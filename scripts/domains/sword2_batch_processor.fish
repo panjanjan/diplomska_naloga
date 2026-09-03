@@ -1,31 +1,38 @@
 #!/bin/fish
-# FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 pushd "$ROOT"
-set out "$ROOT/outputs"
 
 # error messages proteinov, ki so failali pri analizi
-set log "$out/failed_proteins.log"
-set tmp_log "$out/tmp.log"
+set log "$SWO/failed_proteins.log"
+set tmp_log "$SWO/tmp.log"
 
-# seznam proteinov, ki so uspešno prešli analizo
-# SWORD2 lahko fail-a po tem, ko že ustvari directory,
-# zato je potreben bolj robusten sistem kot le "ls $SWO | grep protein"
-set processed "$out/processed_proteins.log"
+# seznam proteinov, ki so uspešno prešli analizo. Na začetku je prazen.
+# SWORD2 lahko fail-a po tem, ko že ustvari directory, ampak preden naredi karkoli
+set processed "$SWO/processed_proteins.log"
 
 echo "using the following parameters:
-* data directory        $DB
-* output directory      $SWO
+
+* inputs directory      $DB
+* outputs directory     $SWO
 * SWORD2 path           $SWORD_PATH
-* conda environment     $CONDA_ENV_NAME
+* conda environment     $SWORD_CONDA_ENV
 
 using the following log files:
+
 * failed proteins       $log, $tmp_log
 * successfull proteins  $processed
 "
+
+while read --nchars 1 -l response --prompt-str="Proceed? (y/n): "; or return 1
+  switch $response
+    case "y" "Y"
+      break
+    case "n" "N"
+      exit
+    case '*'
+      echo "invalid input"
+      continue
+  end
+end
 
 echo "==> initializing log files"
 for log_file in "$log" "$tmp_log" "$processed"
@@ -33,35 +40,44 @@ for log_file in "$log" "$tmp_log" "$processed"
 end
 
 # resetiraj tmp log v vsakem primeru
-echo "" > "$tmp_log"
+echo -n "" > "$tmp_log"
 
 # preveri, da ima res vsak protein iz seznama svoj output directory
 echo "==> checking past analysis integrity ($processed)"
+
 for protein in (cat "$processed")
-    echo -n "$protein: "
-    ls "$SWO" | grep -q "$protein"
-    if test $status -ne 0
-        echo "no output directory. removing from list"
-        grep -v "$protein" "$processed" > "$processed" 2> /dev/null
+    echo -ne "\r$protein: "
+    # ls "$SWO" | grep -q "$protein"
+    # if test $status -ne 0
+    if test -d "$SWO/$protein*"
+        echo "$protein" >> "$tmp_log"
+        echo -n "pass"
     else
-        echo "pass"
+        echo "no output directory. removing from list"
     end
 end
 
+echo ""
+mv "$tmp_log" "$processed"
+touch "$tmp_log"
+
+# TODO: ostal tukaj
+exit
+
 echo "==> obtaining list of PDB files"
-set files "$DB/*.pdb"
-set n (count "$files")
+set files (find "$DB" -name "*.pdb")
+set n (count $files)
 set i 0
 set failed 0
 
 echo "==> activating conda environment"
-conda activate "$CONDA_ENV_NAME"
+conda activate "$SWORD_CONDA_ENV"
 
 echo "==> running analyses"
 
-for protein in "$files"
+for protein in $files
     set i (math $i + 1)
-    set prot_fname (path basename "$protein" | string replace ".pdb" "")
+    set prot_fname (path basename --no-extension "$protein")
     set chain (string split "_" "$prot_fname" -f 2)
     echo -n "[$i/$n] $protein: "
 

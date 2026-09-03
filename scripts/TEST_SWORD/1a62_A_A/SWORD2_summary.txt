@@ -1,0 +1,34 @@
+Ambiguity index: *
+-----------------------
+Optimal partition
+Quality: 
+Nb. domains: 1
+Domain:1       AUL= 80% Z-score=-2.3
+    PU:  1-130 AUL= 79% Z-score=-2.2
+-----------------------
+Alternative partition 1
+Quality: *
+Nb. domains: 3
+Domain:1       AUL= 70% Z-score=-1.8
+    PU:   1-47 AUL= 72% Z-score=-1.9
+Domain:2       AUL=  0% Z-score=-0.6
+    PU:  48-94 AUL=  0% Z-score=-0.6
+Domain:3       AUL= 45% Z-score=-1.4
+    PU: 95-130 AUL= 49% Z-score=-1.4
+-----------------------
+Alternative partition 2
+Quality: ***
+Nb. domains: 2
+Domain:1       AUL= 72% Z-score=-1.9
+    PU:   1-47 AUL= 70% Z-score=-1.8
+Domain:2       AUL=  5% Z-score=-1.0
+    PU: 48-130 AUL= 13% Z-score=-1.1
+-----------------------
+Alternative partition 3
+Quality: *
+Nb. domains: 2
+Domain:1       AUL= 77% Z-score=-2.1
+    PU:   1-47 AUL= 72% Z-score=-1.9
+    PU: 95-130 AUL= 50% Z-score=-1.4
+Domain:2       AUL=  0% Z-score=-0.6
+    PU:  48-94 AUL=  0% Z-score=-0.6

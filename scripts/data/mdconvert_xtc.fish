@@ -3,7 +3,6 @@
 # xtc trajektorije pretvori v dcd format
 #
 # python dependency: https://mdtraj.org/1.9.4/mdconvert.html
-
 pushd "$ROOT/atlas_db/trajectories"
 
 for xtcfile in *.xtc
