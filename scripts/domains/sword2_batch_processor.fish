@@ -1,6 +1,9 @@
 #!/bin/fish
 pushd "$ROOT"
 
+# uporabi 3 datoteke namesto vseh
+argparse t/test -- $argv
+
 # error messages proteinov, ki so failali pri analizi
 set log "$SWO/failed_proteins.log"
 set tmp_log "$SWO/tmp.log"
@@ -18,7 +21,7 @@ echo "using the following parameters:
 
 using the following log files:
 
-* failed proteins       $log, $tmp_log
+* failed proteins       $log
 * successfull proteins  $processed
 "
 
@@ -34,51 +37,62 @@ while read --nchars 1 -l response --prompt-str="Proceed? (y/n): "; or return 1
   end
 end
 
+echo
 echo "==> initializing log files"
-for log_file in "$log" "$tmp_log" "$processed"
-    test -w "$log_file" || touch "$log_file"
-end
-
+# ustvari samo ko še ne obstajajo
 # resetiraj tmp log v vsakem primeru
-echo -n "" > "$tmp_log"
+touch "$log"
+touch "$tmp_log"
+touch "$processed"
+echo -n > "$tmp_log"
 
-# preveri, da ima res vsak protein iz seznama svoj output directory
+echo
 echo "==> checking past analysis integrity ($processed)"
-
+# preveri, da ima res vsak protein iz seznama svoj output directory
+# ls fail-a če zvezdica ne najde directorija - take odstrani s seznama
 for protein in (cat "$processed")
     echo -ne "\r$protein: "
-    # ls "$SWO" | grep -q "$protein"
-    # if test $status -ne 0
-    if test -d "$SWO/$protein*"
+
+    ls "$SWO/$protein"* -d
+
+    if test $status -ne 0
+        echo "no output directory. removing from list"
+    else
         echo "$protein" >> "$tmp_log"
         echo -n "pass"
-    else
-        echo "no output directory. removing from list"
     end
 end
 
-echo ""
+# NOTE: tmp se izbriše tukaj
 mv "$tmp_log" "$processed"
-touch "$tmp_log"
 
-# TODO: ostal tukaj
-exit
-
+echo
 echo "==> obtaining list of PDB files"
+# find vrne space-separated list of values
+# vzame subset datotek če testiraš
 set files (find "$DB" -name "*.pdb")
+
+if set -ql _flag_test
+    echo "TEST MODE: using 3 files"
+    set files (string split " " $files | head -n 3)
+end
+
 set n (count $files)
 set i 0
 set failed 0
 
+echo
 echo "==> activating conda environment"
 conda activate "$SWORD_CONDA_ENV"
 
+echo
 echo "==> running analyses"
 
 for protein in $files
-    set i (math $i + 1)
+    set i          (math $i + 1)
     set prot_fname (path basename --no-extension "$protein")
-    set chain (string split "_" "$prot_fname" -f 2)
+    set chain      (string split "_" "$prot_fname" -f 2)
+
     echo -n "[$i/$n] $protein: "
 
     # če je protein že obdelan, pojdi na naslednjega
@@ -87,31 +101,36 @@ for protein in $files
         echo -n "... "
 
     # shrani stderr v tmp datoteko
+    set current_tmp "$SWO/tmp_$i.log"
+    touch "$current_tmp"
+
     "$SWORD_PATH" \
         -i "$protein" \
         -c "$chain" \
-        -o "$SWO" \
-    > /dev/null 2> "$tmp_log"
+        -o "$SWO/$prot_fname" > /dev/null 2> "$current_tmp"
 
     if test $status -ne 0
-        # v primeru, da gre nekaj narobe, shrani log
-        echo "error. status: $status"
         set failed (math $failed + 1)
+        echo "error. status: $status"
+
+        # v primeru, da gre nekaj narobe, shrani v log
         echo -e "--- $(date "+%Y-%m-%d %H:%M") $protein ---\n" >> "$log"
-        cat "$tmp_log" >> "$log"
-        echo "" >> "$log"
+        cat "$current_tmp"                                     >> "$log"
+        echo ""                                                >> "$log"
     else
         # v primeru, da gre vse prav, dodaj protein na seznam
         echo "done"
         echo "$prot_fname" >> "$processed"
     end
+
+    rm "$current_tmp"
 end
 
+echo
 echo "$failed/$n proteins failed"
 echo "logs written to $log"
 echo "results in $SWO"
 
-# clean afer yourself
-rm "$tmp_log"
+# počisti za sabo
 conda deactivate
 popd

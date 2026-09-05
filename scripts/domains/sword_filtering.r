@@ -34,7 +34,7 @@
 # 3. ambiguity index med 1 in 3
 # 4. AUL vrednosti domen vsaj 75 (najmanj 50)
 #
-# Uporabil sem **samo optimalne particije.**
+# Uporabi samo optimalne particije.
 # -------------------------------------------------------------------------------------------------------
 library(dplyr)
 

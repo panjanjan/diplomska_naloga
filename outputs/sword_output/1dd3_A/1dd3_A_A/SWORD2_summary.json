@@ -1,0 +1,98 @@
+{
+    "Ambiguity index": "*",
+    "Optimal partition": {
+        "Partition": "Optimal partition",
+        "Quality": "****",
+        "Nb. domains": 2,
+        "Domains": {
+            "Domain 1": {
+                "AUL": 83,
+                "Z-score": -2.5,
+                "PUs": {
+                    "1-49": {
+                        "AUL": 84,
+                        "Z-score": -2.5
+                    }
+                }
+            },
+            "Domain 2": {
+                "AUL": 92,
+                "Z-score": -3.7,
+                "PUs": {
+                    "50-128": {
+                        "AUL": 92,
+                        "Z-score": -3.6
+                    }
+                }
+            }
+        }
+    },
+    "Alternative partition 1": {
+        "Partition": "Alternative partition 1",
+        "Quality": "*",
+        "Nb. domains": 3,
+        "Domains": {
+            "Domain 1": {
+                "AUL": 83,
+                "Z-score": -2.4,
+                "PUs": {
+                    "1-49": {
+                        "AUL": 82,
+                        "Z-score": -2.4
+                    }
+                }
+            },
+            "Domain 2": {
+                "AUL": 0,
+                "Z-score": -1.0,
+                "PUs": {
+                    "50-97": {
+                        "AUL": 0,
+                        "Z-score": -1.0
+                    }
+                }
+            },
+            "Domain 3": {
+                "AUL": 79,
+                "Z-score": -2.2,
+                "PUs": {
+                    "98-128": {
+                        "AUL": 81,
+                        "Z-score": -2.3
+                    }
+                }
+            }
+        }
+    },
+    "Alternative partition 2": {
+        "Partition": "Alternative partition 2",
+        "Quality": "*",
+        "Nb. domains": 2,
+        "Domains": {
+            "Domain 1": {
+                "AUL": 89,
+                "Z-score": -3.2,
+                "PUs": {
+                    "1-49": {
+                        "AUL": 83,
+                        "Z-score": -2.4
+                    },
+                    "98-128": {
+                        "AUL": 80,
+                        "Z-score": -2.3
+                    }
+                }
+            },
+            "Domain 2": {
+                "AUL": 1,
+                "Z-score": -1.0,
+                "PUs": {
+                    "50-97": {
+                        "AUL": 0,
+                        "Z-score": -1.0
+                    }
+                }
+            }
+        }
+    }
+}

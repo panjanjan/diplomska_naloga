@@ -1,0 +1,11 @@
+Peeling level 1
+    Number of Protein Units: 2
+    Compaction Index: 66.91
+       1-49: AUL= 82% Z-score=-2.4
+     50-128: AUL= 92% Z-score=-3.6
+Peeling level 2
+    Number of Protein Units: 3
+    Compaction Index: 73.14
+       1-49: AUL= 84% Z-score=-2.5
+      50-97: AUL=  0% Z-score=-1.0
+     98-128: AUL= 79% Z-score=-2.2

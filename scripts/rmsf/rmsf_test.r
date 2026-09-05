@@ -52,7 +52,6 @@ run <- function(i) {
     assertthat::are_equal(length(pdbfile), 1)
 
     pdb <- read.pdb(pdbfile, verbose = FALSE)
-
     domain_bounds <- data$domains[i, -1] |> unlist()
     inds <- atom.select(pdb, "noh", resno = domain_bounds[1]:domain_bounds[2])
 
@@ -61,22 +60,14 @@ run <- function(i) {
     rmsf2 <- run_replicate(dcdfiles[2], pdb, inds)
     rmsf3 <- run_replicate(dcdfiles[3], pdb, inds)
 
+    # čiščenje sproti, da se ne zafila spomin. Keep in mind, da
+    # tečejo paralelno, zato se lahko hitro zafila.
     rm(pdb, inds)
 
-    # WARN: shrani RMSFje če še ne obstajajo
+    # shrani RMSFje
     out_rmsf <- file.path(paths$rmsf, paste0(protein, "_rmsf.csv"))
-
-    if ((out_rmsf %in% list.files(paths$rmsf, full.names = TRUE)) == FALSE) {
-        print("not yet! saving RMSFs")
-        rmsf_all <- data.frame(
-            R1 = rmsf1,
-            R2 = rmsf2,
-            R3 = rmsf3
-        )
-        write.csv(rmsf_all, out_rmsf, quote = FALSE, row.names = FALSE)
-    } else {
-        print("RMSFs exist!")
-    }
+    rmsf_all <- data.frame(R1 = rmsf1, R2 = rmsf2, R3 = rmsf3)
+    write.csv(rmsf_all, out_rmsf, quote = FALSE, row.names = FALSE)
 
     # izvedi testa
     test1 <- run_test(rmsf1, domain_bounds)
@@ -85,16 +76,15 @@ run <- function(i) {
 
     rm(rmsf1, rmsf2, rmsf3)
 
-    # združi rezultate
+    # združi in vrni rezultate
     protein_replicate <- sub(".dcd", "", basename(dcdfiles))
-
     df <- rbind(test1, test2, test3)
     df <- cbind(protein_replicate, df)
-
     df
 }
 
 # vrne vektor rmsf vrednosti za replikat
+# TODO: 3 selekcije
 run_replicate <- function(dcdfile, pdb, inds) {
     cat(dcdfile, "\n")
     dcd <- read.dcd(dcdfile, verbose = FALSE)

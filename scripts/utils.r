@@ -1,9 +1,9 @@
 paths <- list(
-    sword       = here::here("sword_results.csv"),
-    sword_clean = here::here("sword_results_clean.csv"),
     domains     = here::here("two_domains.csv"),
     traj        = here::here("atlas_db", "trajectories"),
     pdb         = here::here("atlas_db", "PDB"),
+    sword       = here::here("outputs", "sword_results.csv"),
+    sword_clean = here::here("outputs", "sword_results_clean.csv"),
     dist        = here::here("outputs", "COM"),
     angles      = here::here("outputs", "PAI"),
     rmsf        = here::here("outputs", "RMSF")

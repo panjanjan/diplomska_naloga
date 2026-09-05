@@ -1,4 +1,6 @@
 #!/bin/Rscript
+# WARN: glej raje rmsf_test.r
+
 # Kljub statistično značilne razlike med RMSF domen, ne pomeni, da
 # v njih prihaja do meddomenskega gibanja. Na primer ena domena je
 # skoraj toga, druga precej fleksibilna in ni meddomenskega gibanja.
@@ -68,7 +70,6 @@ run <- function(i) {
     df
 }
 
-# gg
 run_replicate <- function(dcdfile, pdb, inds) {
 }
 
