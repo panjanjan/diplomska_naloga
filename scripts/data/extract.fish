@@ -3,44 +3,56 @@
 
 pushd "$ROOT/atlas_db"
 
-argparse query target -- $argv
+argparse q/query t/target T/test -- $argv;
 or exit
 
-if ! set -ql _flag_query || ! set -ql _flag_target
-  echo "usage: extract.fish <query> <target>"
-  echo ""
-  echo "query: pattern to match files using 'find'"
-  echo "target: output directory for extracted files"
+if ! set -ql _flag_query; or ! set -ql _flag_target
+  echo "usage: extract.fish -q <str> -t <str> [ -T/--test ]"
   exit
 else
   set query "$argv[1]"
   set target "$argv[2]"
 end
 
-test -d "$target" || mkdir -p "$target"
+test -d "$target"; or mkdir -p "$target"
 
 # sem unzipa datoteke, skopira ven željene in izbriše nepotrebne
-rm -rf tmp/*
+rm -rf "tmp/*"
+mkdir -p tmp
 
-function process_zip -a name
-  set base (path basename --no-extension "$name")
+set files (ls analysis/*.zip)
 
-  # preveri če datoteka že obstaja
-  ls "$target" | grep -q "$base" && return
+# vzami subset za testiranje
+if set -ql _flag_test
+  set files (string split " " $files | head -n 5)
+end
 
-  unzip -qd "tmp/$base" "$name"
+set n (count $files)
+set i 0
 
-  # absoluten path do datoteke za mv
-  set fname (find "tmp/$base" -name "$query")
-  mv "$fname" "$target"
+# izogibam sem paralelizacije tega, ker se lahko hitro zafila prostor
+for zipf in $files
+  set i (math $i + 1)
+  echo -n "[$i/$n] $zipf ... "
+
+  set base (path basename --no-extension "$zipf")
+
+  # preskoči tiste, ki že obstajajo
+  if count $target/$base* > /dev/null
+    echo "(skip)"
+    continue
+  end
+
+  unzip -qd "tmp/$base" "$zipf"
+
+  # absoluten path do željene datoteke za mv
+  set query_file (find "tmp/$base" -name "$query")
+
+  mv "$query_file" "$target"
 
   # počisti
   rm -r "tmp/$base"
-end
-
-# izogibam sem paralelizacije tega, ker se lahko hitro zafila prostor
-for zipf in (find analysis -name "*.zip")
-  process_zip "$zipf"
+  echo "done"
 end
 
 popd
