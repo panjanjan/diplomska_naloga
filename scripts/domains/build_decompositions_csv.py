@@ -96,7 +96,8 @@ if __name__ == "__main__":
     with open(csv_name, "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(field_names)
-        for fname in glob.glob("outputs/sword_output/*/*.json"):
+        for fname in glob.glob("outputs/sword_output/*/*/*.json"):
             report = process_report(fname)
             for line in report:
                 writer.writerow(line)
+    print("written to", csv_name)
