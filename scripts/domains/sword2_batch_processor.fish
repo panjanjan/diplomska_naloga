@@ -53,7 +53,7 @@ echo "==> checking past analysis integrity ($processed)"
 for protein in (cat "$processed")
     echo -ne "\r$protein: "
 
-    ls "$SWO/$protein"* -d
+    test -e "$SWO/$protein"*
 
     if test $status -ne 0
         echo "no output directory. removing from list"
