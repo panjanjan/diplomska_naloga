@@ -1,5 +1,6 @@
 #!/bin/bash
 "$ROOT/scripts/domains/introduce_chain.r"
+# "$ROOT/scripts/domains/sword2_example.fish"
 "$ROOT/scripts/domains/sword2_batch_processor.fish"
 "$ROOT/scripts/domains/build_decompositions_csv.py"
 # TODO: pretvori v r-script
