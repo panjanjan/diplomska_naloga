@@ -1,7 +1,7 @@
 paths <- list(
     domains     = here::here("two_domains.csv"),
     traj        = here::here("atlas_db", "trajectories"),
-    pdb         = here::here("atlas_db", "PDB"),
+    pdb         = here::here("atlas_db", "PDB_chained"),
     sword       = here::here("outputs", "sword_results.csv"),
     sword_clean = here::here("outputs", "sword_results_clean.csv"),
     dist        = here::here("outputs", "COM"),
