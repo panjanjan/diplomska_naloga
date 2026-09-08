@@ -50,6 +50,7 @@ frequencies_units.txt
 /scripts/TODO
 /scripts/*_files
 1dd3_A_fit_A.*
+3ebh_A_R1.*
 /gromacs_tutorial_1
 tmp.log
 failed_proteins.log
