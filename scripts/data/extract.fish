@@ -3,6 +3,7 @@
 
 pushd "$ROOT/atlas_db"
 
+# argument parsing
 argparse q/query t/target T/test -- $argv;
 or exit
 
@@ -14,7 +15,21 @@ else
   set target "$argv[2]"
 end
 
-test -d "$target"; or mkdir -p "$target"
+echo "using query: $query, target: $(find $ROOT -name $target)"
+while read --nchars 1 -l response --prompt-str="Proceed? (y/n): "; or return 1
+  switch $response
+    case "y" "Y"
+      break
+    case "n" "N"
+      exit
+    case '*'
+      echo "invalid input"
+      continue
+  end
+end
+
+# ustvari target directory če še ne obstaja
+test -d "$target"; or mkdir "$target"
 
 # sem unzipa datoteke, skopira ven željene in izbriše nepotrebne
 rm -rf "tmp/*"
@@ -35,6 +50,7 @@ for zipf in $files
   set i (math $i + 1)
   echo -n "[$i/$n] $zipf ... "
 
+  # samo ime proteina z verigo, npr. "1dd3_A"
   set base (path basename --no-extension "$zipf")
 
   # preskoči tiste, ki že obstajajo
@@ -43,14 +59,18 @@ for zipf in $files
     continue
   end
 
-  unzip -qd "tmp/$base" "$zipf"
+  # extractaj v začasni directory
+  # q : quiet
+  # d : directory
+  # n : no overwriting
+  unzip -qnd "tmp/$base" "$zipf"
 
   # absoluten path do željene datoteke za mv
-  set query_file (find "tmp/$base" -name "$query")
+  set query_files (find "tmp/$base" -name "$query")
 
-  mv "$query_file" "$target"
-
-  # počisti
+  # prestavi pomembne datoteke, zbriši ostanek
+  # unqoatano ker je lahko več datotek skupaj
+  mv $query_files "$target"
   rm -r "tmp/$base"
   echo "done"
 end
