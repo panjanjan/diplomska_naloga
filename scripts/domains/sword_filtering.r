@@ -36,16 +36,18 @@
 #
 # Uporabi samo optimalne particije.
 # -------------------------------------------------------------------------------------------------------
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE)
 
 source(here::here("scripts", "utils.r"))
 
+cat("reading sword results\n")
 csv <- read.csv(paths$sword, header = TRUE) |>
     as_tibble() |>
     group_by(protein)
 
 # Število domen -----------------------------------------------------------------------------------------
 # Prvi korak je odstraniti vse, ki imajo samo eno domeno.
+cat("removing one-domain proteins\n")
 md_opt <- csv |>
     filter(partition == 0) |>
     filter(max(domain) > 1)
@@ -53,6 +55,8 @@ md_opt <- csv |>
 # Razmerja med velikostmi domen--------------------------------------------------------------------------
 # Določene domene morajo biti približno enako velike. Uporabil sem razmerji 1 proti 2 (meja 0,5) in 1 proti 3 (meja 0,3).
 # `check_ratios` vrne seznam proteinov pri katerih so razmerja med vsako domeno večja od meje.
+cat("removing proteins with big domains ratios\n")
+
 prot_group <- \(d, p) d[d$protein == p, ]
 
 # razmerje določa cutoff parameter, med 0 in 1
@@ -80,15 +84,18 @@ check_ratios <- function(df, cutoff = 0.3) {
 }
 
 md_keep <- check_ratios(md_opt, cutoff = 0.5)
+md_keep <- filter(md_opt, protein %in% md_keep)
 
 # A-index -----------------------------------------------------------------------------------------------
 # Manjši kot je A-index, boljša je dekompozicija, saj je manj _ambiguous_. Izločil sem vse, ki imajo index manj kot 4.
+cat("removing proteins with big A-index\n")
 md_keep <- filter(md_keep, aindex < 4)
 
 # AUL vrednosti -----------------------------------------------------------------------------------------
 # Vse domene v particiji morajo imeti dobre AUL vrednosti, na primer >75.
 # Koda vzame najslabšo AUL vrednost med domenami v particiji. Če je najslabša vrednost večja
 # od meje, potem so vse ostale večje ali enake tej vrednosti. Protein v tem primeru ostane.
+cat("removing proteins with low AUL values\n")
 
 # vsebuje eno domeno na protein
 bad_doms <- data.frame()
@@ -107,10 +114,11 @@ stopifnot(all(group_keys(bad_doms) == group_keys(md_keep)))  # zajame vse protei
 stopifnot(all(bad_doms$protein == unique(bad_doms$protein))) # ni duplikatov
 
 # proteini, ki ostanejo
-sel_prot <- bad_doms[which(bad_doms$AUL > 75), "protein"]
+sel_prot <- bad_doms[which(bad_doms$AUL > 75), "protein"] |> unlist()
 final    <- filter(md_keep, protein %in% sel_prot)
 
 # -------------------------------------------------------------------------------------------------------
+cat("saving clean list of proteins\n")
 write.csv(
     file      = paths$sword_clean,
     x         = final,
