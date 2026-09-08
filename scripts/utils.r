@@ -21,3 +21,19 @@ dark_plot <- function() {
     )
     plot(1)
 }
+
+# ustvari PDB datoteko iz trajektorije proteina
+# traj: abs path do DCD trajektorije
+# pdb: abs path do PDB datoteke
+pdb_from_trajectory <- function(traj, pdb) {
+    cat("this may take a while\n")
+    t <- bio3d::read.dcd(traj, verbose = FALSE)
+    p <- bio3d::read.pdb(pdb, verbose = FALSE)
+    o <- here::here(sub("dcd", "pdb", basename(dcdfile)))
+    bio3d::write.pdb(
+        pdb = p,
+        xyz = t,
+        file = o
+    )
+    for (i in 1:10) cat("ne pozabi dodat na .gitignore!!!!!!!!!!!!!!!!!!\n")
+}
