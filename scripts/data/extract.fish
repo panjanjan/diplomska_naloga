@@ -1,78 +1,82 @@
 #!/bin/fish
-# iz vseh zip datotek proteinov skopira neke željene datoteke
+# prejšnji extract je produkt mojega igranja ustvarjanja cli toola
+# ta naredi kar potrebujem. to je vse.
 
-pushd "$ROOT/atlas_db"
-
-# argument parsing
-argparse q/query t/target T/test -- $argv;
-or exit
-
-if ! set -ql _flag_query; or ! set -ql _flag_target
-  echo "usage: extract.fish -q <str> -t <str> [ -T/--test ]"
-  exit
-else
-  set query "$argv[1]"
-  set target "$argv[2]"
+# point je, da se ta script pokliče z xargs, zato sprejme ime datoteke
+# preko -i/--input, npr: find ... | xargs -P 4 -I '{}' script -i '{}'
+function _validate_input
+    if not test -f "$_flag_value"
+        echo "input nonexisting: $_flag_value" >&2
+        return 1
+    end
 end
 
-echo "using query: $query, target: $(find $ROOT -name $target)"
-while read --nchars 1 -l response --prompt-str="Proceed? (y/n): "; or return 1
-  switch $response
-    case "y" "Y"
-      break
-    case "n" "N"
-      exit
-    case '*'
-      echo "invalid input"
-      continue
-  end
+argparse -S 'i/input=!_validate_input' -- $argv; or exit 1
+
+if not set -q _flag_input
+    echo "./extract.fish -i/--input file" >&2
+    exit 1
 end
 
-# ustvari target directory če še ne obstaja
-test -d "$target"; or mkdir "$target"
+set zip_file "$_flag_input"
+set pdb_dir "$ROOT/atlas_db/PDB"
+set traj_dir "$ROOT/atlas_db/trajectories"
+set tmp_dir "$ROOT/atlas_db/tmp"
 
-# sem unzipa datoteke, skopira ven željene in izbriše nepotrebne
-rm -rf "tmp/*"
-mkdir -p tmp
+test -d "$pdb_dir"; or mkdir -p "$pdb_dir"
+test -d "$traj_dir"; or mkdir -p "$traj_dir"
+test -d "$tmp_dir"; or mkdir -p "$tmp_dir"
 
-set files (ls analysis/*.zip)
+function process_zip -a zipf
+    set -l base (path basename --no-extension "$zipf")
 
-# vzami subset za testiranje
-if set -ql _flag_test
-  set files (string split " " $files | head -n 5)
+    # preveri ali obstajajo datoteke
+    # - 1 PDB datoteka: npr. 1dd3_A.pdb
+    # - 3 XTC datoteke: npr. 1dd3_A_R{1,2,3}.xtc
+    set -l pdb_file "$pdb_dir/$base.pdb"
+    set -l xtc_files "$traj_dir/$base"_R1.xtc "$traj_dir/$base"_R2.xtc "$traj_dir/$base"_R3.xtc
+
+    # če vse ciljne datoteke že obstajajo, ni treba unzipati
+    set -l all_exist 1
+    for f in $pdb_file $xtc_files
+        if not test -f "$f"
+            set all_exist 0
+            break
+        end
+    end
+
+    if test $all_exist -eq 1
+        echo "$base: skip"
+        return 0
+    end
+
+    # extractaj v začasni directory samo manjkajoče datoteke
+    # q : quiet
+    # d : directory
+    set -l tmp_base "$tmp_dir/$base"
+    mkdir -p "$tmp_base"
+
+    set -l wanted_in_zip "$base.pdb" "$base"_R1.xtc "$base"_R2.xtc "$base"_R3.xtc
+    if not unzip -q -d "$tmp_base" "$zipf" $wanted_in_zip
+        echo "$base: unzip failed" >&2
+        rm -rf "$tmp_base"
+        return 1
+    end
+
+    # premakni vsako datoteko samo, če še ne obstaja na cilju
+    if not test -f "$pdb_file"; and test -f "$tmp_base/$base.pdb"
+        mv "$tmp_base/$base.pdb" "$pdb_file"
+    end
+    for i in 1 2 3
+        set -l target "$traj_dir/$base"_R$i.xtc
+        set -l src "$tmp_base/$base"_R$i.xtc
+        if not test -f "$target"; and test -f "$src"
+            mv "$src" "$target"
+        end
+    end
+
+    rm -rf "$tmp_base"
+    echo "$base: done"
 end
 
-set n (count $files)
-set i 0
-
-# izogibam sem paralelizacije tega, ker se lahko hitro zafila prostor
-for zipf in $files
-  set i (math $i + 1)
-  echo -n "[$i/$n] $zipf ... "
-
-  # samo ime proteina z verigo, npr. "1dd3_A"
-  set base (path basename --no-extension "$zipf")
-
-  # preskoči tiste, ki že obstajajo
-  if count $target/$base* > /dev/null
-    echo "(skip)"
-    continue
-  end
-
-  # extractaj v začasni directory
-  # q : quiet
-  # d : directory
-  # n : no overwriting
-  unzip -qnd "tmp/$base" "$zipf"
-
-  # absoluten path do željene datoteke za mv
-  set query_files (find "tmp/$base" -name "$query")
-
-  # prestavi pomembne datoteke, zbriši ostanek
-  # unqoatano ker je lahko več datotek skupaj
-  mv $query_files "$target"
-  rm -r "tmp/$base"
-  echo "done"
-end
-
-popd
+process_zip "$zip_file"

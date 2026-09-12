@@ -5,25 +5,32 @@ import json
 import os
 from pathlib import Path
 
-# zgradil bo CSV iz JSON datotek. vrstice se grupirajo po proteinih in
-# particijah optimalna particija ima vrednost 0. Domain predstavlja
-# število zaporedne domene. 1 = prva domena. range start-end domene je glede
-# na prvo aminokislino prve PU in zadnjo aminokislino zadnje PU. AUL je od
-# domene. A-index in Qualtiy sta 0, če je prazen string, drugače je število
-# zvezdic '*'.
+# Format podatkov ---------------------------------------------------------------------------------------
+# zgradil bo CSV iz JSON datotek.
 #
-# primer za 1a62_A:
+# `sword_results.csv` vsebuje podatke iz JSON datotek, ki jih ustvari SWORD2.
+# Vrstice se združujejo po proteinih in proteini po svojih particijah.
 #
-#   protein aindex partition quality domain AUL start end
-#   1a62_A  1      0         0       1      81  1     130<---| optimal
-#   1a62_A  1      1         1       1      70  1     47<----| alt. 1
-#   1a62_A  1      1         1       2      0   48    94     |
-#   1a62_A  1      1         1       3      46  95    130    |
-#   1a62_A  1      2         3       1      72  1     47<----| alt. 2
-#   1a62_A  1      2         3       2      8   48    130    |
-#   1a62_A  1      3         1       1      76  1     130<---| alt. 3
-#   1a62_A  1      3         1       2      0   48    94     |
+# protein:   PDB koda ter veriga, ki je bila uporabljena za SWORD2
+# aindex:    ambiguity index proteina
+# partition: indeks particije. Optimalna ima 0, alternativne 1 ali več
+# quality:   ocena particije
+# domain:    indeks domene. Prva domena 1, druga domena 2, ...
+# AUL:       AUL vrednost domene
+# start:     prva aminokislina domene
+# end:       zadnja aminokislina domene
 #
+# Primer za 1a62_A:
+#
+# protein aindex partition quality domain AUL start end
+# 1a62_A  1      0         0       1      81  1     130 <---| opt.
+# 1a62_A  1      1         1       1      70  1     47 <----| alt. 1
+# 1a62_A  1      1         1       2      0   48    94      |
+# 1a62_A  1      1         1       3      46  95    130     |
+# 1a62_A  1      2         3       1      72  1     47 <----| alt. 2
+# 1a62_A  1      2         3       2      8   48    130     |
+# 1a62_A  1      3         1       1      76  1     130 <---| alt. 3
+# 1a62_A  1      3         1       2      0   48    94      |
 ROOT = os.getenv("ROOT")
 
 field_names = [

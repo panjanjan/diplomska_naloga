@@ -1,8 +1,15 @@
 #!/bin/fish
 pushd "$ROOT"
 
-# uporabi 3 datoteke namesto vseh
-argparse t/test -- $argv
+# test: uporabi 3 datoteke namesto vseh
+# check: preveri rezultate in zaključi
+# y: preskoči prompt
+argparse -S \
+    't/test=?' \
+    'c/check=?' \
+    'y=?' \
+    -- $argv
+or exit
 
 # error messages proteinov, ki so failali pri analizi
 set log "$SWO/failed_proteins.log"
@@ -11,6 +18,9 @@ set tmp_log "$SWO/tmp.log"
 # seznam proteinov, ki so uspešno prešli analizo. Na začetku je prazen.
 # SWORD2 lahko fail-a po tem, ko že ustvari directory, ampak preden naredi karkoli
 set processed "$SWO/processed_proteins.log"
+
+if set -ql _flag_output
+end
 
 echo "using the following parameters:
 
@@ -25,16 +35,18 @@ using the following log files:
 * successfull proteins  $processed
 "
 
-while read --nchars 1 -l response --prompt-str="Proceed? (y/n): "; or return 1
-  switch $response
-    case "y" "Y"
-      break
-    case "n" "N"
-      exit
-    case '*'
-      echo "invalid input"
-      continue
-  end
+if ! set -ql _flag_y
+    while read --nchars 1 -l response --prompt-str="Proceed? (y/n): "; or return 1
+      switch $response
+        case "y" "Y"
+          break
+        case "n" "N"
+          exit
+        case '*'
+          echo "invalid input"
+          continue
+      end
+    end
 end
 
 echo
@@ -66,6 +78,10 @@ end
 # NOTE: tmp se izbriše tukaj
 mv "$tmp_log" "$processed"
 
+if set -ql _flag_check
+    exit
+end
+
 echo
 echo "==> obtaining list of PDB files"
 # find vrne space-separated list of values
@@ -78,6 +94,7 @@ if set -ql _flag_test
 end
 
 set n (count $files)
+echo "using $n files"
 set i 0
 set failed 0
 
@@ -128,6 +145,7 @@ end
 
 echo
 echo "$failed/$n proteins failed"
+echo
 echo "logs written to $log"
 echo "results in $SWO"
 

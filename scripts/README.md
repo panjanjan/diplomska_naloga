@@ -40,13 +40,14 @@
 mkdir -p "$ROOT/atlas_db"
 "$ROOT/scripts/data/calculate_atlas_size.fish"
 "$ROOT/scripts/data/download_atlas.fish"
-"$ROOT/scripts/data/extract.fish" --query "*.pdb"      --target "PDB"
-"$ROOT/scripts/data/extract.fish" --query "*.tpr"      --target "trajectories"
-"$ROOT/scripts/data/extract.fish" --query "*.xtc"      --target "trajectories"
+
+find "$ROOT/atlas_db/analysis" -name "*.zip" |\
+	xargs -P 5 -I {} "$ROOT/scripts/data/extract.fish" --input "{}"
+
+"$ROOT/scripts/data/introduce_chain.r"
 "$ROOT/scripts/data/mdconvert_xtc.fish"
 
 # 02 - Domains
-"$ROOT/scripts/domains/introduce_chain.r"
 "$ROOT/scripts/domains/sword2_example.fish"
 "$ROOT/scripts/domains/sword2_batch_processor.fish"
 "$ROOT/scripts/domains/build_decompositions_csv.py"

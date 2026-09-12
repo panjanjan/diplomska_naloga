@@ -1,38 +1,10 @@
 #!/bin/Rscript
-# WARN: poženi da vidiš če dela pravilno
-
-# Format podatkov ---------------------------------------------------------------------------------------
-#
-# `sword_results.csv` vsebuje podatke iz JSON datotek, ki jih ustvari SWORD2.
-# Vrstice se združujejo po proteinih in proteini po svojih particijah.
-#
-# protein:   PDB koda ter veriga, ki je bila uporabljena za SWORD2
-# aindex:    ambiguity index proteina
-# partition: indeks particije. Optimalna ima 0, alternativne 1 ali več
-# quality:   ocena particije
-# domain:    indeks domene. Prva domena 1, druga domena 2, ...
-# AUL:       AUL vrednost domene
-# start:     prva aminokislina domene
-# end:       zadnja aminokislina domene
-#
-# Primer za 1a62_A:
-#
-# protein aindex partition quality domain AUL start end
-# 1a62_A  1      0         0       1      81  1     130 <---| opt.
-# 1a62_A  1      1         1       1      70  1     47 <----| alt. 1
-# 1a62_A  1      1         1       2      0   48    94      |
-# 1a62_A  1      1         1       3      46  95    130     |
-# 1a62_A  1      2         3       1      72  1     47 <----| alt. 2
-# 1a62_A  1      2         3       2      8   48    130     |
-# 1a62_A  1      3         1       1      76  1     130 <---| alt. 3
-# 1a62_A  1      3         1       2      0   48    94      |
-#
 # Filtriranje glede na sledeče pogoje
 #
 # 1. več kot ena domena v particiji
-# 2. razmerje med katerokoli domeno v particiji naj ne bo večje od 1:2 (1:3?)
+# 2. razmerje med katerokoli domeno v particiji naj ne bo večje od 1:2
 # 3. ambiguity index med 1 in 3
-# 4. AUL vrednosti domen vsaj 75 (najmanj 50)
+# 4. AUL vrednosti domen večje od 75
 #
 # Uporabi samo optimalne particije.
 # -------------------------------------------------------------------------------------------------------
@@ -40,27 +12,41 @@ library(dplyr, warn.conflicts = FALSE)
 
 source(here::here("scripts", "utils.r"))
 
-cat("reading sword results\n")
+# -------------------------------------------------------------------------------------------------------
+# za izpisovanje sporočil
+pad_msg <- \(msg) paste(c(msg, rep(" ", 41 - nchar(msg))), collapse = "")
+n_prot  <- \(d) nrow(group_keys(d))
+
+# povleče ven skupino vrstic, ki pripadajo proteinu p v dataframu d
+prot_group <- \(d, p) d[d$protein == p, ]
+
+# Data --------------------------------------------------------------------------------------------------
+cat(pad_msg("action"), "|", "num prot.\n")
+cat(rep("-", 53), "\n", sep = "")
+cat(pad_msg("reading sword results"), "| ")
+
 csv <- read.csv(paths$sword, header = TRUE) |>
     as_tibble() |>
     group_by(protein)
 
+cat(n_prot(csv), "\n")
+
 # Število domen -----------------------------------------------------------------------------------------
 # Prvi korak je odstraniti vse, ki imajo samo eno domeno.
-cat("removing one-domain proteins\n")
+cat(pad_msg("removing one-domain proteins"), "| ")
+
 md_opt <- csv |>
     filter(partition == 0) |>
     filter(max(domain) > 1)
 
+cat(n_prot(md_opt), "\n")
+
 # Razmerja med velikostmi domen--------------------------------------------------------------------------
-# Določene domene morajo biti približno enako velike. Uporabil sem razmerji 1 proti 2 (meja 0,5) in 1 proti 3 (meja 0,3).
-# `check_ratios` vrne seznam proteinov pri katerih so razmerja med vsako domeno večja od meje.
-cat("removing proteins with big domains ratios\n")
+# Določene domene morajo biti približno enako velike. Uporabi razmerje 1 proti 2 (meja 0,5).
+cat(pad_msg("removing proteins with big domains ratios"), "| ")
 
-prot_group <- \(d, p) d[d$protein == p, ]
-
-# razmerje določa cutoff parameter, med 0 in 1
-check_ratios <- function(df, cutoff = 0.3) {
+# vrne seznam proteinov pri katerih so razmerja med vsako domeno večja od meje.
+check_ratios <- function(df, cutoff = 0.5) {
     keep <- c()
     for (prot in unique(df$protein)) {
         d2 <- prot_group(df, prot) |> as.data.frame() # tu nočem tibble
@@ -86,16 +72,21 @@ check_ratios <- function(df, cutoff = 0.3) {
 md_keep <- check_ratios(md_opt, cutoff = 0.5)
 md_keep <- filter(md_opt, protein %in% md_keep)
 
+cat(n_prot(md_keep), "\n")
+
 # A-index -----------------------------------------------------------------------------------------------
-# Manjši kot je A-index, boljša je dekompozicija, saj je manj _ambiguous_. Izločil sem vse, ki imajo index manj kot 4.
-cat("removing proteins with big A-index\n")
-md_keep <- filter(md_keep, aindex < 4)
+# Manjši kot je A-index, boljša je dekompozicija, saj je manj _ambiguous_. Izloči vse, ki imajo index izven (1,3).
+cat(pad_msg("removing proteins with big A-index"), "| ")
+
+md_keep <- filter(md_keep, aindex > 0 && aindex < 4)
+
+cat(n_prot(md_keep), "\n")
 
 # AUL vrednosti -----------------------------------------------------------------------------------------
 # Vse domene v particiji morajo imeti dobre AUL vrednosti, na primer >75.
 # Koda vzame najslabšo AUL vrednost med domenami v particiji. Če je najslabša vrednost večja
 # od meje, potem so vse ostale večje ali enake tej vrednosti. Protein v tem primeru ostane.
-cat("removing proteins with low AUL values\n")
+cat(pad_msg("removing proteins with low AUL values"), "| ")
 
 # vsebuje eno domeno na protein
 bad_doms <- data.frame()
@@ -117,8 +108,12 @@ stopifnot(all(bad_doms$protein == unique(bad_doms$protein))) # ni duplikatov
 sel_prot <- bad_doms[which(bad_doms$AUL > 75), "protein"] |> unlist()
 final    <- filter(md_keep, protein %in% sel_prot)
 
+cat(n_prot(final), "\n")
+
 # -------------------------------------------------------------------------------------------------------
-cat("saving clean list of proteins\n")
+cat(rep("-", 53), "\n", sep = "")
+cat(pad_msg("saving clean list of proteins"), "|", n_prot(final), "\n")
+
 write.csv(
     file      = paths$sword_clean,
     x         = final,

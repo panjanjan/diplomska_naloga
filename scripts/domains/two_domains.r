@@ -1,21 +1,23 @@
 #!/bin/Rscript
-# WARN: poženi da vidiš če dela pravilno
-
 # naredi csv, ki hrani informacije o domenah
 #
 # protein1 start1 end1 start2 end2
 # protein2 start1 end1 start2 end2
 # protein3 start1 end1 start2 end2
 # ...
+# -----------------------------------------------------------------
 library(magrittr)
 
-source(here::here("scripts", "utils.r")
+source(here::here("scripts", "utils.r"))
 
-out <- paths$domains
-data <- read.csv(here::here("sword_results_clean.csv"))
+# -----------------------------------------------------------------
+cat("reading\n")
+data <- read.csv(paths$sword_clean)
 
-# izloči tiste, ki imajo samo 2 domeni
+# ohrani proteine z 2 domenama. število vrstic v CSVju določa št.
+# domen. glej ./build_decompositions_csv.py
 # ohrani ime proteina in meje domen
+cat("trimming\n")
 data <- data$protein %>%
     table() %>%
     {which(. < 3)} %>%
@@ -23,8 +25,10 @@ data <- data$protein %>%
     {data[data$protein %in% ., c("protein", "start", "end")]}
 
 # združi vrstice, da bo en protein na vrstico
+cat("building\n")
 d2 <- data.frame()
 
+# ker vemo da bosta samo 2 vrstici na protein
 for (i in seq(1, nrow(data), 2)) {
     dsub  <- data[i:(i+1), ]
     start <- dsub$start
@@ -39,4 +43,11 @@ for (i in seq(1, nrow(data), 2)) {
     d2 <- rbind(d2, dnew)
 }
 
-write.csv(d2, out, quote = FALSE, row.names = FALSE)
+cat("writing\n")
+write.csv(d2, paths$domains, quote = FALSE, row.names = FALSE)
+
+
+
+# NOTE: Well..... lahko bi še bolj zmanjšal redundanco in shranil
+# samo end1 ali start2. Vedno se začne z 1, vedno bo end2 na koncu
+# proteina. Ampak I CBA.
