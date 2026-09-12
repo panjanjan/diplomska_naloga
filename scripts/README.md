@@ -32,3 +32,31 @@
 - [`pai_analysis.r`](./phys/pai_analysis.r): čaka na nadaljno implementacijo
 - [`principal_axes_of_inertia.r`](./phys/principal_axes_of_inertia.r): določi vztrajnostne osi domen in izračuna kote med njimi skozi trajektorijo.
 - [`sde.r`](./phys/sde.r): spektralna analiza razdalj, kotov.
+
+# Example
+
+```sh
+# 01 - Data
+mkdir -p "$ROOT/atlas_db"
+"$ROOT/scripts/data/calculate_atlas_size.fish"
+"$ROOT/scripts/data/download_atlas.fish"
+"$ROOT/scripts/data/extract.fish" --query "*.pdb"      --target "PDB"
+"$ROOT/scripts/data/extract.fish" --query "*.tpr"      --target "trajectories"
+"$ROOT/scripts/data/extract.fish" --query "*.xtc"      --target "trajectories"
+"$ROOT/scripts/data/mdconvert_xtc.fish"
+
+# 02 - Domains
+"$ROOT/scripts/domains/introduce_chain.r"
+"$ROOT/scripts/domains/sword2_example.fish"
+"$ROOT/scripts/domains/sword2_batch_processor.fish"
+"$ROOT/scripts/domains/build_decompositions_csv.py"
+"$ROOT/scripts/domains/sword_filtering.r"
+"$ROOT/scripts/domains/two_domains.r"
+
+# 03 - RMSF
+"$ROOT/scripts/rmsf/calc_rmsf.r"
+"$ROOT/scripts/rmsf/test_rmsf.r"
+
+# 04 - phys
+# ...
+```
