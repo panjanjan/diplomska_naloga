@@ -56,25 +56,25 @@ run <- function(i) {
     # združi in shrani vrednosti po selekcijah
     out <- file.path(paths$rmsf, paste0(protein, "_rmsf_all.csv"))
     d <- data.frame(
-        R1_all = r1$all,
-        R2_all = r2$all,
-        R3_all = r3$all
+        R1 = r1$all,
+        R2 = r2$all,
+        R3 = r3$all
     )
     write.csv(d, out, quote = FALSE, row.names = FALSE)
 
     out <- file.path(paths$rmsf, paste0(protein, "_rmsf_bb.csv"))
     d <- data.frame(
-        R1_bb  = r1$bb,
-        R2_bb  = r2$bb,
-        R3_bb  = r3$bb
+        R1  = r1$bb,
+        R2  = r2$bb,
+        R3  = r3$bb
     )
     write.csv(d, out, quote = FALSE, row.names = FALSE)
 
     out <- file.path(paths$rmsf, paste0(protein, "_rmsf_ca.csv"))
     d <- data.frame(
-        R1_ca  = r1$ca,
-        R2_ca  = r2$ca,
-        R3_ca  = r3$ca
+        R1  = r1$ca,
+        R2  = r2$ca,
+        R3  = r3$ca
     )
     write.csv(d, out, quote = FALSE, row.names = FALSE)
 
