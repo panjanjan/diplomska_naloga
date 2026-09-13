@@ -1,13 +1,12 @@
 #!/bin/Rscript
 # izpiše meje domen za dani protein
-library(here)
-source(file.path(here(), "scripts", "utils.r")
+source(here::here("scripts", "utils.r"))
 
 d <- read.csv(paths$domains)
 
 p <- {
     arg <- commandArgs(trailingOnly = TRUE)[1]
-    if (is.na(arg)) stop("manjka ime proteina: ./domains_inds.r <protein>\n")
+    if (is.na(arg)) stop("./domains_inds.r <protein-name>\n")
     arg
 }
 

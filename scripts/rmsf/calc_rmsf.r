@@ -54,28 +54,28 @@ run <- function(i) {
     r3 <- run_replicate(dcdfiles[3], pdb, sel_list)
 
     # združi in shrani vrednosti po selekcijah
+    out <- file.path(paths$rmsf, paste0(protein, "_rmsf_all.csv"))
     d <- data.frame(
         R1_all = r1$all,
         R2_all = r2$all,
         R3_all = r3$all
     )
-    out <- file.path(paths$rmsf, paste0(protein, "_rmsf_all.csv"))
     write.csv(d, out, quote = FALSE, row.names = FALSE)
 
+    out <- file.path(paths$rmsf, paste0(protein, "_rmsf_bb.csv"))
     d <- data.frame(
         R1_bb  = r1$bb,
         R2_bb  = r2$bb,
         R3_bb  = r3$bb
     )
-    out <- file.path(paths$rmsf, paste0(protein, "_rmsf_bb.csv"))
     write.csv(d, out, quote = FALSE, row.names = FALSE)
 
+    out <- file.path(paths$rmsf, paste0(protein, "_rmsf_ca.csv"))
     d <- data.frame(
         R1_ca  = r1$ca,
         R2_ca  = r2$ca,
         R3_ca  = r3$ca
     )
-    out <- file.path(paths$rmsf, paste0(protein, "_rmsf_ca.csv"))
     write.csv(d, out, quote = FALSE, row.names = FALSE)
 
     # cat("done\n")
@@ -93,6 +93,6 @@ run_replicate <- function(dcdfile, pdb, sel_list) {
 
 # --------------------------------------------------------------
 cat("using", n_cores, "cores\n")
-invisible(mclapply(1:n_all, run, mc.cores = n_cores))
+nothing <- mclapply(1:n_all, run, mc.cores = n_cores)
 
 # for (i in 1:n_all) run(i)
