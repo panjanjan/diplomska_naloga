@@ -49,6 +49,7 @@ frequencies_units.txt
 /scripts/03_phys/psd_files/*
 /scripts/TODO
 /scripts/*_files
+pdb_atlas.tar.gz
 1dd3_A_fit_A.*
 3ebh_A_R1.*
 /gromacs_tutorial_1
@@ -58,3 +59,4 @@ processed_proteins.log
 .RData
 .Rhistory
 .venv
+/rv/*
