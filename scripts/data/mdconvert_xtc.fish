@@ -27,7 +27,7 @@ end
 
 # --------------------------------------------------------------
 set xtcfile "$_flag_input"
-set pdb_dir "$ROOT/atlas_db/PDB_chained"
+set pdb_dir "$ROOT/atlas_db/PDB"
 set traj_dir "$ROOT/atlas_db/trajectories"
 
 # --------------------------------------------------------------

@@ -10,7 +10,7 @@ or exit
 set n 5
 
 # seznam proteinov
-set proteins "2024_11_18_ATLAS_pdb.txt"
+set prot_list "$ROOT/atlas_db/2024_11_18_ATLAS_pdb.txt"
 
 set data_dir "analysis"
 set test_dir "TEST"
@@ -20,8 +20,7 @@ set header "accept: application/octet-stream"
 
 function run -a target_dir prot_list
   echo "storing into $(pwd)/$target_dir"
-  echo "$prot_list"
-
+ 
   test -d "$target_dir" || mkdir -p "$target_dir"
 
   echo "$prot_list" |\

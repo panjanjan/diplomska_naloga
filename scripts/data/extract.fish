@@ -30,13 +30,12 @@ test -d "$tmp_dir"; or mkdir -p "$tmp_dir"
 function process_zip -a zipf
     set -l base (path basename --no-extension "$zipf")
 
-    # preveri ali obstajajo datoteke
     # - 1 PDB datoteka: npr. 1dd3_A.pdb
     # - 3 XTC datoteke: npr. 1dd3_A_R{1,2,3}.xtc
     set -l pdb_file "$pdb_dir/$base.pdb"
     set -l xtc_files "$traj_dir/$base"_R1.xtc "$traj_dir/$base"_R2.xtc "$traj_dir/$base"_R3.xtc
 
-    # če vse ciljne datoteke že obstajajo, ni treba unzipati
+    # ne unzippaj če vse že obstaja
     set -l all_exist 1
     for f in $pdb_file $xtc_files
         if not test -f "$f"
@@ -50,20 +49,20 @@ function process_zip -a zipf
         return 0
     end
 
-    # extractaj v začasni directory samo manjkajoče datoteke
+    # extractaj v začasni directory
     # q : quiet
     # d : directory
     set -l tmp_base "$tmp_dir/$base"
     mkdir -p "$tmp_base"
 
     set -l wanted_in_zip "$base.pdb" "$base"_R1.xtc "$base"_R2.xtc "$base"_R3.xtc
-    if not unzip -q -d "$tmp_base" "$zipf" $wanted_in_zip
+    if not unzip -q -o -d "$tmp_base" "$zipf" $wanted_in_zip
         echo "$base: unzip failed" >&2
         rm -rf "$tmp_base"
         return 1
     end
 
-    # premakni vsako datoteko samo, če še ne obstaja na cilju
+    # premakni vsako datoteko, če ne obstaja v target
     if not test -f "$pdb_file"; and test -f "$tmp_base/$base.pdb"
         mv "$tmp_base/$base.pdb" "$pdb_file"
     end
