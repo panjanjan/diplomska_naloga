@@ -1,6 +1,0 @@
-linters: linters_with_defaults(
-    line_length_linter(120),
-    object_name_linter = object_name_linter("snake_case"),
-    indentation_linter = indentation_linter(indent = 4L),
-    commented_code_linter = NULL
-  )

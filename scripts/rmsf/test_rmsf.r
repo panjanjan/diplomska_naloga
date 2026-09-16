@@ -1,136 +1,145 @@
 #!/bin/Rscript
-# TODO: popravi, da obravnava vse selekcije
-
-# Nad RMSF proteinov izvede statistična testa t in ks.
+# S statističnima testoma t in ks primerja ali se RMSF vrednosti med domenama
+# razlikujejo.
 #
 # Trajektorije so bile poravnane na prvi frame pred depozicijo v ATLAS bazo (I
 # think).
-#
-# S statističnim testom primerja ali se RMSF vrednosti med domenama razlikujejo.
-# Ob statistični značilnosti "lahko" pričakujemo meddomensko gibanje.
-
-# ------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 library(bio3d)
+library(stringr)
 library(parallel)
 library(magrittr)
 
 source(here::here("scripts", "utils.r"))
 
-# Rezultate testov shrani v 'results_target'. Replikate proteinov, ki imajo
-# statistično značilne razlike shrani v 'replicates_target'. Imena proteinov,
-# katerih vsi trije replikati passajo, shrani v 'proteins_target'
-out <- list(
-  results    = here::here("outputs", "rmsf_test_results.csv"),
-  replicates = here::here("outputs", "rmsf_test_replicates.txt"),
-  proteins   = here::here("outputs", "rmsf_test_proteins.txt")
+cfg <- list(
+  # meja za p-vrednosti
+  cutoff = 0.05,
+
+  # število jeder za paralelizacijo
+  n_cores = min(detectCores() - 1, 10),
+
+  # TODO: doc
+  results_t  = here::here("outputs", "rmsf_ttest_results.csv"),
+  results_ks = here::here("outputs", "rmsf_kstest_results.csv")
 )
 
-# meja za p-vrednosti
-cutoff <- 0.05
-
-# število jeder za paralelizacijo
-n_cores <- min(detectCores() - 1, 10)
-
-# PDB datotetke, DCD trajektorije, podatki o domenah
+# RMSFji in podatki o domenah
 data <- list(
-  pdb     = list.files(paths$pdb, pattern = ".pdb", full.names = TRUE),
-  traj    = list.files(paths$traj, pattern = ".dcd", full.names = TRUE),
+  rmsf    = list.files(paths$rmsf, pattern = ".csv", full.names = TRUE),
   domains = read.csv(paths$domains)
 )
 
 n_all <- nrow(data$domains)
 
-# ------------------------------------------------------------------------------
-run <- function(i) {
+# -----------------------------------------------------------------------------
+# za vsak protein izvede statistični test nad vsemi selekcijami in replikati.
+# Vrne 9-vrstični dataframe, na primer
+#
+#   protein replicate selection stat pval pass
+#   1dd3_A  1         all       0    0    TRUE
+#   1dd3_A  1         bb        0    0    TRUE
+#   1dd3_A  1         ca        0    0    FALSE
+#   1dd3_A  2         all       0    0    TRUE
+#   1dd3_A  2         bb        0    0    TRUE
+#   1dd3_A  2         ca        0    0    FALSE
+#   1dd3_A  3         all       0    0    TRUE
+#   1dd3_A  3         bb        0    0    TRUE
+#   1dd3_A  3         ca        0    0    FALSE
+#
+run <- function(i, stat_test) {
   protein <- data$domains$protein[i]
 
-  dcdfiles <- grep(protein, data$traj, value = TRUE)
-  pdbfile <- grep(protein, data$pdb, value = TRUE)
-  assertthat::are_equal(length(dcdfiles), 3)
-  assertthat::are_equal(length(pdbfile), 1)
+  rmsffiles <- grep(protein, data$rmsf, value = TRUE)
+  assertthat::are_equal(length(rmsffiles), 3)
 
-  pdb <- read.pdb(pdbfile, verbose = FALSE)
   domain_bounds <- data$domains[i, -1] |> unlist()
-  inds <- atom.select(pdb, "noh", resno = domain_bounds[1]:domain_bounds[2])
 
-  # rmsf-ji
-  rmsf1 <- run_replicate(dcdfiles[1], pdb, inds)
-  rmsf2 <- run_replicate(dcdfiles[2], pdb, inds)
-  rmsf3 <- run_replicate(dcdfiles[3], pdb, inds)
+  # ---[ združi in vrni rezultate ]---
+  #: 3xlist(r1 = 3xdata.frame, r2 = 3xdata.frame, r3 = 3xdata.frame)
+  res_l <- list(
+    r1 = run_selection(rmsffiles[1], domain_bounds, stat_test),
+    r2 = run_selection(rmsffiles[2], domain_bounds, stat_test),
+    r3 = run_selection(rmsffiles[3], domain_bounds, stat_test)
+  )
 
-  # čiščenje sproti, da se ne zafila spomin. Keep in mind, da
-  # tečejo paralelno, zato se lahko hitro zafila.
-  rm(pdb, inds)
+  # povleči selekcije iz imen namesto da hardcodeaš vektor, da
+  # je vedno pravi vrstni red
+  selections <- gsub(".*rmsf_(.*).csv", "\\1", basename(rmsffiles), perl = TRUE)
 
-  # shrani RMSFje
-  out_rmsf <- file.path(paths$rmsf, paste0(protein, "_rmsf.csv"))
-  rmsf_all <- data.frame(R1 = rmsf1, R2 = rmsf2, R3 = rmsf3)
-  write.csv(rmsf_all, out_rmsf, quote = FALSE, row.names = FALSE)
+  d <- data.frame(
+    protein = rep(protein, 9),
+    replicate = rep(1:3, each = 3),
+    selection = rep(selections, 3)
+  )
 
-  # izvedi testa
-  test1 <- run_test(rmsf1, domain_bounds)
-  test2 <- run_test(rmsf2, domain_bounds)
-  test3 <- run_test(rmsf3, domain_bounds)
-
-  rm(rmsf1, rmsf2, rmsf3)
-
-  # združi in vrni rezultate
-  protein_replicate <- sub(".dcd", "", basename(dcdfiles))
-  df <- rbind(test1, test2, test3)
-  df <- cbind(protein_replicate, df)
-  df
+  d <- do.call(rbind, res_l) %>% cbind(d, .)
+  d
 }
 
-# vrne vektor rmsf vrednosti za replikat
-run_replicate <- function(dcdfile, pdb, inds) {
-  cat(dcdfile, "\n")
-  dcd <- read.dcd(dcdfile, verbose = FALSE)
-  rmsf(dcd)
-}
+# vrne 3 vrstični dataframe. Vsaka vrstica hrani rezultate statističnega testa
+# izvedenega nad RSMFji določenega replikata.
+run_selection <- function(rmsffile, domain_bounds, stat_test) {
+  csv <- read.csv(rmsffile)
 
-# izvede statistični test nad rmsfji domen
-run_test <- function(rmsf, domain_bounds) {
-  rmsf_a <- rmsf[domain_bounds[1]:domain_bounds[2]]
-  rmsf_b <- rmsf[domain_bounds[3]:domain_bounds[4]]
+  # razdeli RMSF vrednosti na domene
+  #: 2xlist(dom1 = nxvec, dom2 = mxvec)
+  part_rmsf <- \(rmsfvals) {
+    list(
+      dom1 = rmsfvals[domain_bounds[1]:domain_bounds[2]],
+      dom2 = rmsfvals[domain_bounds[3]:domain_bounds[4]]
+    )
+  }
 
-  ks_res <- ks.test(rmsf_a, rmsf_b, alternative = "two.sided")
-
-  # logaritmiraj za t-test
-  rmsf_a <- log(rmsf_a)
-  rmsf_b <- log(rmsf_b)
-
-  t_res <- t.test(rmsf_a, rmsf_b, alternative = "two.sided")
-
-  # enovrstični dataframe
-  data.frame(
-    ks_stat   = ks_res$statistic,
-    ks_pval   = ks_res$p.value,
-    ks_pass   = ks_res$p.value < cutoff,
-    t_stat    = t_res$statistic,
-    t_pval    = t_res$p.value,
-    t_pass    = t_res$p.value < cutoff,
-    both_pass = (t_res$p.value < cutoff) & (ks_res$p.value < cutoff)
+  #: 3xdata.frame(stat, pval, pass)
+  rbind(
+    run_replicate(part_rmsf(csv$R1), stat_test),
+    run_replicate(part_rmsf(csv$R2), stat_test),
+    run_replicate(part_rmsf(csv$R3), stat_test)
   )
 }
 
-# --------------------------------------------------------------------
-cat("using", n_cores, "cores\n")
-cat("using", cutoff, "as cutoff for p-values\n")
+# za t-test logaritmira vrednosti. vrne eno-vrstični dataframe
+run_replicate <- function(rmsfpart, stat_test) {
+  test_res <- switch(stat_test,
+    "t" = {
+      t.test(
+        log(rmsfpart$dom1),
+        log(rmsfpart$dom2),
+        alternative = "two.sided"
+      )
+    },
+    "ks" = {
+      ks.test(
+        rmsfpart$dom1,
+        rmsfpart$dom2,
+        alternative = "two.sided"
+      )
+    }
+  )
 
-# rezultati testov
-results <- mclapply(1:n_all, run, mc.cores = n_cores)
-results <- do.call(rbind, results)
+  #: 1xdata.frame(stat, pval, pass)
+  data.frame(
+    stat = test_res$statistic,
+    pval = test_res$p.value,
+    pass = (test_res$p.value < cfg$cutoff)
+  )
+}
 
-# imena replikatov proteinov ki passajo OBA testa
-passed_replicates <- results[which(results$both_pass), "protein_replicate"]
+# -----------------------------------------------------------------------------
+main <- \(stat_test) {
+  cat("runing ", stat_test, "-test analysis\n", sep="")
 
-# imena proteinov ki passajo z vsakim replikatom
-passed_proteins <- passed_replicates %>%
-  sub("_R.", "", .) %>%
-  table() %>%
-  grep(3, ., value = TRUE) %>%
-  names(.)
+  # vrne list, ki ga zlepi v data.frame/matriko
+  results <- mclapply(1:n_all, run, mc.cores = cfg$n_cores, stat_test = stat_test)
+  results <- do.call(rbind, results)
 
-write.csv(results, out$results, quote = FALSE, row.names = FALSE)
-writeLines(passed_replicates, out$replicates)
-writeLines(passed_proteins, out$proteins)
+  out_name <- paste0("results_", stat_test)
+  write.csv(results, cfg[[out_name]], quote = FALSE, row.names = FALSE)
+}
+
+cat("using", cfg$n_cores, "cores\n")
+cat("using", cfg$cutoff, "as cutoff for p-values\n")
+
+main("t")
+main("ks")
