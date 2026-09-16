@@ -5,21 +5,10 @@ Repository vsebuje vso kodo, analize, izračune, s katerimi sem raziskoval prote
 
 # Struktura
 
-- [`atlas_db`](./atlas_db/): podatki iz baze, rezultati analiz.
-    - [`analysis`](./atlas_db/analysis/): [analysis del ATLAS baze](https://www.dsimb.inserm.fr/ATLAS/api/docs#/Downloads/download_atlas_analysis_ATLAS_analysis__pdb_chain__get). Uporabljeni so bili vsi proteini navedeni v [`2024_11_18_ATLAS_pdb.txt`](./atlas_db/2024_11_18_ATLAS_pdb.txt). En protein je objavljen za primer.
-    - [`COM`](./atlas_db/COM/): analiza masnih centrov (_center of mass_) domen.
-    - [`PAI`](./atlas_db/PAI/): koti med vztrajnostnimi osmi domen
-    - [`PDB`](./atlas_db/PDB/): PDB datoteke proteinov. **Pomembno:** PDBji so pridobljeni iz `analysis` dela ATLAS MD, ne iz Protein Data Bank.
-    - [`PDB_chained`](./atlas_db/PDB_chained/) : iste PDB datoteke, le da vsebujejo še podatek o verigi, ki je shranjena v datoteki.
-    - [`RMSF`](./atlas_db/RMSF/): RMSF podatki za vsak replikat proteina iz `analysis` dela ATLAS MD.
-    - [`SDE`](./atlas_db/SDE/): rezultati spektralne analize.
-    - [`TRAJ`](./atlas_db/TRAJ/): trajektorije vseh proteinov + replikatov. `xtc` in `tpr` datoteke so iz ATLAS MD. `dcd` datoteke so pridobljene z [`mdconvert_xtc.fish`](./scripts/00_data/mdconvert_xtc.fish).
+- [`atlas_db`](./atlas_db/): podatki iz baze.
+- [`outputs`](./outputs/): rezultati analiz.
 - [`scripts`](./scripts/): vsebuje svoj [README](./scripts/README.md)
-- [`sword_output`](./sword_output/): domene določene s SWORD2, glej JSON datoteke
-- [`.envrc`](./.envrc): globalne spremenljivke potrebne za Fish skripte. **Funkcionalnost direnv programa in .envrc je ključna za vse skripte.**
-- [`sword_results.csv`](./sword_results.csv): parsed JSON podatki, ki jih vrne SWORD2. Glej [`sword_filtering.r`](./scripts/01_domains/sword_filtering.r) za format.
-- [`sword_results_clean.csv`](./sword_results_clean.csv) : ožji nabor proteinov, ki so bili izbrani za nadaljne analize.
-- [`two_domains.csv`](./two_domains.csv): bolj berljiv format za meje domen izbranih proteinov (glej [`two_domains.r`](./scripts/01_domains/two_domains.r)).
+- [`.envrc`](./.envrc): globalne spremenljivke potrebne za vse skripte. Priporočam direnv, da se vedno sourca-jo.
 
 # Setup
 
