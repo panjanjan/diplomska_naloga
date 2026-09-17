@@ -60,3 +60,6 @@ processed_proteins.log
 .Rhistory
 .venv
 /rv/*
+/TEST/*
+/outputs/polyzymd/*
+AGENTS.md
