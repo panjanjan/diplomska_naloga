@@ -44,7 +44,7 @@
 # ostalo
 frequencies_units.txt
 /queries/*
-/scripts/scratch.r
+/scripts/scratch.*
 /scripts/sde.r
 /scripts/03_phys/psd_files/*
 /scripts/TODO
