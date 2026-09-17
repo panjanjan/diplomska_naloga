@@ -5,6 +5,8 @@ paths <- list(
     sword       = here::here("outputs", "sword_results.csv"),
     sword_clean = here::here("outputs", "sword_results_clean.csv"),
     domains     = here::here("outputs", "two_domains.csv"),
+    t_test_res  = here::here("outputs", "rmsf_ttest_results.csv"),
+    ks_test_res = here::here("outputs", "rmsf_kstest_results.csv"),
     dist        = here::here("outputs", "COM"),
     angles      = here::here("outputs", "PAI"),
     rmsf        = here::here("outputs", "RMSF")
