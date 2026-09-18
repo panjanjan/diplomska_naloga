@@ -51,7 +51,7 @@ run <- function(i, stat_test) {
   protein <- data$domains$protein[i]
 
   rmsffiles <- grep(protein, data$rmsf, value = TRUE)
-  assertthat::are_equal(length(rmsffiles), 3)
+  stopifnot(length(rmsffiles) == 3)
 
   domain_bounds <- data$domains[i, -1] |> unlist()
 
@@ -143,3 +143,4 @@ cat("using", cfg$cutoff, "as cutoff for p-values\n")
 
 main("t")
 main("ks")
+
