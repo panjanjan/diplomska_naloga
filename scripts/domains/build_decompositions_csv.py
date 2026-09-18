@@ -103,16 +103,18 @@ def process_report(fname: str) -> list[list[str | int]]:
     part_reports: list[list[str | int]] = []
     pid: int = 0
     for key in data:
-        if "partition" in key:
-            raw = data[key]
-            if not isinstance(raw, dict):
-                raise TypeError(f"partition {key} is not an object in {fname}")
-            part: Partition = cast(Partition, raw)
-            # vrne N seznamov, ki predstavljajo podatke o domenah
-            dom_list = process_partition(part)
-            for items in dom_list:
-                part_reports.append([pname, len(aidx), pid, *items])
-            pid += 1
+        if "partition" not in key:
+            continue
+
+        raw = data[key]
+        if not isinstance(raw, dict):
+            raise TypeError(f"partition {key} is not an object in {fname}")
+        part: Partition = cast(Partition, raw)
+        # vrne N seznamov, ki predstavljajo podatke o domenah
+        dom_list = process_partition(part)
+        for items in dom_list:
+            part_reports.append([pname, len(aidx), pid, *items])
+        pid += 1
 
     return part_reports
 
