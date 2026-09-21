@@ -9,6 +9,7 @@ paths <- list(
     ks_test_res = here::here("outputs", "rmsf_kstest_results.csv"),
     dist        = here::here("outputs", "COM"),
     angles      = here::here("outputs", "PAI"),
+    atlas_rmsf  = here::here("atlas_db", "RMSF"),
     rmsf        = here::here("outputs", "RMSF")
 )
 

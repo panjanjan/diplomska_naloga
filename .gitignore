@@ -48,6 +48,8 @@ frequencies_units.txt
 /scripts/sde.r
 /scripts/03_phys/psd_files/*
 /scripts/TODO
+/scripts/rmsf/interdomain*
+/scripts/rmsf/plot_results.r
 /scripts/*_files
 pdb_atlas.tar.gz
 1dd3_A_fit_A.*
