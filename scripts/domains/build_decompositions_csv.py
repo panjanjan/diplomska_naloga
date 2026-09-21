@@ -76,7 +76,7 @@ def process_partition(part: Partition) -> list[list[int]]:
 
     for i, domain in enumerate(part["Domains"].values()):
         aul: int = domain["AUL"]
-        # vsak PU dobi svojo vrstico, saj domene niso nujno zvezne
+        # vsak PU dobi svojo vrstico, ker domene niso nujno zvezne
         for pu in domain["PUs"]:
             pu_s, pu_e = pu.split("-")
             dom_list.append([quality, i + 1, aul, int(pu_s), int(pu_e)])
