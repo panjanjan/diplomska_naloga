@@ -61,6 +61,7 @@ processed_proteins.log
 .RData
 .Rhistory
 .venv
+__pycache__
 /rv/*
 /TEST/*
 /outputs/polyzymd/*
