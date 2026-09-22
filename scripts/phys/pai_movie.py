@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Zgenerira MP4 z dinamiko glavnih osi vztrajnosti domen.
+"""MP4 film dinamike proteina + prve glavne osi vztrajnosti domen.
 
-Vhod:  TEST/d{n}_p{k}.xvg (6 datotek, vsaka: čas [ps], vx, vy, vz — enotski vektor)
-Izhod: outputs/pai_movie.mp4
+Vhod:
+  * PDB      topologija proteina                  (--pdb)
+  * XTC      trajektorija (že centrirana)         (--xtc)
+  * d1_p1.xvg / d2_p1.xvg smeri prve osi [ps, vx, vy, vz]   (--in-pattern)
 
-Frame-i se rišejo vzporedno po več procesih (--workers); posnetek se nato
-sestavi z ffmpeg.
+Prva glavna os (enotski vektor iz xvg) se nariše skozi masni center domene,
+protein kot točke težkih atomov. Frame-i se rišejo vzporedno (--workers).
 """
 # ------------------------------------------------------------------------------
 import argparse
@@ -24,23 +26,30 @@ from matplotlib.lines import Line2D
 from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
 from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
+import MDAnalysis as mda
+
 _G = None
+
+DOMAIN_STYLE = {
+    "d1": {"axis": "#164e7d", "points": "#7da6c9"},
+    "d2": {"axis": "#c0392b", "points": "#d9a4a4"},
+}
 
 
 def read_axes(pattern):
-    """Prebere d{n}_p{k}.xvg in vrne dict: (domain, axis) -> matrika len(t)×3."""
+    """Prebere d{n}_p1.xvg; vrne matrike vektorjev per prefix in čas."""
     files = sorted(glob.glob(pattern))
-    if len(files) != 6:
-        raise SystemExit(f"Pričakovano 6 datotek, najdenih {len(files)}: {files}")
-
+    if not files:
+        raise SystemExit(f"Najdenih ni bilo datotek po maski: {pattern}")
     axes = {}
+    time = None
     for f in files:
         dat = np.loadtxt(f)
-        time = dat[:, 0]
-        vec = dat[:, 1:4]
-        key = os.path.basename(f).removesuffix(".xvg")
-        axes[key] = (time, vec)
-    return axes
+        key = os.path.basename(f).split("_")[0]
+        axes[key] = dat[:, 1:4]
+        if time is None:
+            time = dat[:, 0]
+    return axes, time
 
 
 def unwrap_sign(vecs):
@@ -57,23 +66,31 @@ def unwrap_sign(vecs):
     return out
 
 
-def arrow_segments(v, head_ratio=0.15, head_width=0.07):
-    """Puščica od izhodišča do v: gred + glava kot 3 segmenta."""
-    v = np.asarray(v, float)
-    tip = v
-    shaft = np.array([[0.0, 0.0, 0.0], tip])
-    norm = float(np.linalg.norm(v))
+def axis_segments(uvec, center, length):
+    """Segmenta osi skozi center: gred + glavi na obeh koncih."""
+    axis = np.asarray(uvec, float)
+    norm = np.linalg.norm(axis)
     if norm == 0:
-        return [shaft]
-    axis = v / norm
+        return [np.array([center, center])]
+    axis = axis / norm
     ref = np.array([1.0, 0.0, 0.0]) if abs(axis[0]) < 0.9 \
         else np.array([0.0, 1.0, 0.0])
     perp = np.cross(axis, ref)
     perp = perp / np.linalg.norm(perp)
-    base = tip - axis * head_ratio * norm
-    left = base + perp * head_width
-    right = base - perp * head_width
-    return [shaft, np.array([tip, left]), np.array([tip, right])]
+    half = length / 2.0
+    head = 0.18 * length
+    width = 0.10 * half
+    tip_p = center + axis * half
+    tip_m = center - axis * half
+    base_p = tip_p - axis * head
+    base_m = tip_m + axis * head
+    return [
+        np.array([center - axis * half, center + axis * half]),
+        np.array([tip_p, base_p + perp * width]),
+        np.array([tip_p, base_p - perp * width]),
+        np.array([tip_m, base_m + perp * width]),
+        np.array([tip_m, base_m - perp * width]),
+    ]
 
 
 def _init_worker(state):
@@ -81,48 +98,82 @@ def _init_worker(state):
     _G = state
 
 
-def _draw_background(ax, keys, trails, colors):
-    ax.set_box_aspect((1, 1, 1))
+def _render_chunk(chunk_idxs):
+    """Poriše del frame-ov in vrne seznam PNG-bajtov (v vrstnem redu)."""
+    st = _G
+    u = mda.Universe(st["pdb"], st["xtc"])
+    leaf = u.atoms
+
+    fig = plt.figure(figsize=(6, 6), dpi=st["dpi"])
+    ax = fig.add_subplot(111, projection="3d")
+    bx = st["box"]
+    ax.set_box_aspect((bx[0], bx[1], bx[2]))
     for a in (ax.xaxis, ax.yaxis, ax.zaxis):
         a.set_pane_color((1, 1, 1))
         a.set_ticklabels([])
     for lab in (ax.set_xlabel, ax.set_ylabel, ax.set_zlabel):
         lab("")
-    ax.set_xlim(-1, 1); ax.set_ylim(-1, 1); ax.set_zlim(-1, 1)
-    for k in keys:
-        tpath = trails[k]
-        ax.plot(tpath[:, 0], tpath[:, 1], tpath[:, 2],
-                color=colors[k], alpha=0.25, lw=0.7, zorder=1)
+    ax.set_xlim(*st["ranges"][0]); ax.set_ylim(*st["ranges"][1])
+    ax.set_zlim(*st["ranges"][2])
 
+    heavy = {}
+    for prefix, d in st["domains"].items():
+        ag = u.select_atoms(f"resid {d['r0']}:{d['r1']}")
+        heavy[prefix] = ag.select_atoms("not element H")
 
-def _render_chunk(chunk_idxs):
-    """Poriše del frame-ov in vrne seznam PNG-bajtov (v vrstnem redu)."""
-    axes, keys, trails, colors, labels, time_all, dpi, rotate = _G
-    base_azim, base_elev = -60, 30
+    # statične poti krajišč osi (tip = com + v * length)
+    for prefix in st["axis_keys"]:
+        d = st["domains"][prefix]
+        tips = d["coms"] + d["vecs"] * d["length"]
+        ax.plot(tips[:, 0], tips[:, 1], tips[:, 2],
+                color=st["colors"][prefix], alpha=0.3, lw=0.8, zorder=1)
 
-    fig = plt.figure(figsize=(6, 6), dpi=dpi)
-    ax = fig.add_subplot(111, projection="3d")
-    _draw_background(ax, keys, trails, colors)
+    # legenda: en vnos na domeno z osjo
+    proxies = []
+    for prefix in st["axis_keys"]:
+        c = st["colors"][prefix]
+        proxies.append(Line2D([0], [0], color=c, lw=2.5, marker="o", ms=7,
+                              mfc=c, mec=c,
+                              label=f"Domena {prefix[1:]}"))
+    if proxies:
+        ax.legend(handles=proxies, loc="upper left", fontsize=8, frameon=True)
 
-    proxies = [Line2D([0], [0], color=colors[k], lw=3, label=labels[k])
-               for k in keys]
-    ax.legend(handles=proxies, loc="upper left", fontsize=8, frameon=True)
     time_txt = ax.text2D(0.02, 0.95, "", transform=ax.transAxes, fontsize=12)
 
+    # točke proteina (težki atomi) — posodabljamo s _offsets3d
+    scatters = {}
+    for prefix, d in st["domains"].items():
+        s = ax.scatter([0], [0], [0], s=6, lw=0, color=st["colors"][prefix],
+                       alpha=0.55, depthshade=False, zorder=3)
+        scatters[prefix] = s
+
+    # puščice osi — Line3DCollection, posodabljamo s set_segments
     arrows = {}
-    for k in keys:
-        coll = Line3DCollection([np.zeros((2, 3))], colors=colors[k],
+    for prefix in st["axis_keys"]:
+        coll = Line3DCollection([np.zeros((2, 3))],
+                                colors=st["colors"][prefix],
                                 linewidths=3, zorder=5)
         ax.add_collection3d(coll)
-        arrows[k] = coll
+        arrows[prefix] = coll
 
     pngs = []
-    for j, i in chunk_idxs:
-        for k in keys:
-            arrows[k].set_segments(arrow_segments(axes[k][1][i]))
-        ax.view_init(elev=base_elev, azim=base_azim + j * rotate)
+    time_all = st["time"]
+    n_total = len(time_all)
+    for k, i in chunk_idxs:
+        i = int(i)
+        u.trajectory[i]
+        prot_com = leaf.center_of_mass()
+        for prefix in st["domains"]:
+            coords = heavy[prefix].positions - prot_com
+            scatters[prefix]._offsets3d = (coords[:, 0], coords[:, 1],
+                                           coords[:, 2])
+        for prefix in st["axis_keys"]:
+            d = st["domains"][prefix]
+            arrows[prefix].set_segments(
+                axis_segments(d["vecs"][i], d["coms"][i], d["length"]))
+        ax.view_init(elev=30, azim=-60 + k * st["rotate"])
         time_txt.set_text(f"t = {time_all[i] / 1000:.1f} ns"
-                          f"  ({i} / {len(time_all)})")
+                          f"  ({i} / {n_total})")
         buf = io.BytesIO()
         fig.savefig(buf, format="png")
         pngs.append(buf.getvalue())
@@ -140,16 +191,17 @@ def _build_pipeline(out, codec, fps):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--in-pattern", default="TEST/d*_p*.xvg",
-                    help="globska maska vhodnih datotek")
+    ap.add_argument("--pdb", default="atlas_db/PDB_chained/1dd3_A.pdb")
+    ap.add_argument("--xtc", default="TEST/1dd3_A_R1.xtc")
+    ap.add_argument("--domains", default="d1:1-49,d2:50-128",
+                    help="domene: prefix:resid-za-delek, ločene z vejico")
+    ap.add_argument("--in-pattern", default="TEST/d*_p1.xvg",
+                    help="smeri glavnih osi (samo prva os, p1)")
     ap.add_argument("--out", default="outputs/pai_movie.mp4")
-    ap.add_argument("--step", type=int, default=2,
-                    help="vsaka n-ta frame vnese v posnetek")
+    ap.add_argument("--step", type=int, default=2)
     ap.add_argument("--fps", type=int, default=30)
-    ap.add_argument("--workers", type=int, default=0,
-                    help="število procesov (0 = avtomatsko)")
-    ap.add_argument("--chunk", type=int, default=50,
-                    help="koliko frame-ov poriše en proces hkrati")
+    ap.add_argument("--workers", type=int, default=0)
+    ap.add_argument("--chunk", type=int, default=50)
     ap.add_argument("--codec", default="libopenh264",
                     help="ffmpeg video kodek (brez libx264 v ffmpeg-free)")
     ap.add_argument("--dpi", type=int, default=120)
@@ -159,45 +211,81 @@ def main():
                     help="ne popravljaj predznaka osi")
     args = ap.parse_args()
 
-    axes = read_axes(args.in_pattern)
-    keys = sorted(axes)
-    time_all, _ = axes[keys[0]]
-    idxs = np.arange(0, len(time_all), args.step)
+    axes, time_all = read_axes(args.in_pattern)
 
-    colors = {
-        "d1_p1": "#1f77b4", "d1_p2": "#6fb1de", "d1_p3": "#c6dcef",
-        "d2_p1": "#d62728", "d2_p2": "#e89b9b", "d2_p3": "#f2cccc",
-    }
-    labels = {
-        "d1_p1": "Domena 1 · os 1", "d1_p2": "Domena 1 · os 2",
-        "d1_p3": "Domena 1 · os 3", "d2_p1": "Domena 2 · os 1",
-        "d2_p2": "Domena 2 · os 2", "d2_p3": "Domena 2 · os 3",
-    }
+    domains = {}
+    for item in args.domains.split(","):
+        prefix, rr = item.split(":")
+        r0s, r1s = rr.split("-")
+        domains[prefix] = {"r0": int(r0s), "r1": int(r1s)}
+    for p in sorted(domains):
+        if p in axes:
+            vecs = axes[p] if args.no_unwrap else unwrap_sign(axes[p])
+            domains[p]["vecs"] = vecs
+    axis_keys = [p for p in sorted(domains) if "vecs" in domains[p]]
 
-    if not args.no_unwrap:
-        axes = {k: (t, unwrap_sign(v)) for k, (t, v) in axes.items()}
+    colors = {}
+    for p in sorted(domains):
+        if p in DOMAIN_STYLE:
+            colors[p] = DOMAIN_STYLE[p]["axis"]
+        elif p in axis_keys:
+            colors[p] = "#333333"
+        else:
+            colors[p] = "#888888"
 
-    trails = {k: v[idxs] for k, (_, v) in axes.items()}
+    # en prehod čez trajektorijo: obseg, COM domen in dolžina osi
+    u = mda.Universe(args.pdb, args.xtc)
+    if u.trajectory.n_frames != len(time_all):
+        raise SystemExit(f"trajektorija {u.trajectory.n_frames} frame-ov, "
+                         f"xvg {len(time_all)}; ne ujemata se")
+
+    mins = np.full(3, np.inf)
+    maxs = np.full(3, -np.inf)
+    agroups = {}
+    heavies = {}
+    for p, d in domains.items():
+        agroups[p] = u.select_atoms(f"resid {d['r0']}:{d['r1']}")
+        heavies[p] = agroups[p].select_atoms("not element H")
+        if "vecs" in d:
+            d["coms"] = np.empty((len(time_all), 3))
+        d["length"] = 0.8 * float(
+            np.abs(heavies[p].positions - agroups[p].center_of_mass()).max())
+    for i, ts in enumerate(u.trajectory):
+        prot_com = u.atoms.center_of_mass()
+        c = u.atoms.positions - prot_com
+        mins = np.minimum(mins, c.min(0))
+        maxs = np.maximum(maxs, c.max(0))
+        for p, d in domains.items():
+            if "coms" in d:
+                d["coms"][i] = agroups[p].center_of_mass() - prot_com
+
+    margin = 0.05 * (maxs - mins).max()
+    ranges = [(mins[k] - margin, maxs[k] + margin) for k in range(3)]
+    dims = [rng[1] - rng[0] for rng in ranges]
+    box = [dim / max(dims) for dim in dims]
 
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
 
-    # razdeli frame-e na večje kupčke za vzporedno risanje
-    frame_tasks = [(j, i) for j, i in enumerate(idxs)]
+    frame_tasks = [(k, i) for k, i
+                   in enumerate(np.arange(0, u.trajectory.n_frames, args.step))]
     chunks = [frame_tasks[s:s + args.chunk]
               for s in range(0, len(frame_tasks), args.chunk)]
-
-    state = (axes, keys, trails, colors, labels,
-             time_all, args.dpi, args.rotate)
-    n_workers = args.workers or min(os.cpu_count() or 1, len(chunks))
-
-    proc = _build_pipeline(args.out, args.codec, args.fps)
-    done = 0
     n_frames = len(frame_tasks)
+
+    state = {
+        "pdb": args.pdb, "xtc": args.xtc, "time": time_all,
+        "domains": domains, "axis_keys": axis_keys, "colors": colors,
+        "ranges": ranges, "box": box, "dpi": args.dpi, "rotate": args.rotate,
+    }
+    n_workers = args.workers or min(os.cpu_count() or 1, len(chunks))
+    proc = _build_pipeline(args.out, args.codec, args.fps)
+
     print(f"{n_frames} frame-ov, {len(chunks)} kupčkov, {n_workers} procesov",
           flush=True)
-
+    done = 0
     if n_workers > 1:
-        with ProcessPoolExecutor(max_workers=n_workers, initializer=_init_worker,
+        with ProcessPoolExecutor(max_workers=n_workers,
+                                 initializer=_init_worker,
                                  initargs=(state,)) as ex:
             for pngs in ex.map(_render_chunk, chunks):
                 for png in pngs:
