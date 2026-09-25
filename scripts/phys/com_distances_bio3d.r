@@ -6,19 +6,37 @@
 library(bio3d)
 library(parallel)
 
-setwd(Sys.getenv("ROOT"))
-source("./scripts/utils.r")
+source(here::here("scripts", "utils.r"))
 
-data <- load_data("all")
+# ------------------------------------------------------------------------------
+# število jeder za paralelizacijo
+n_cores <- min(detectCores() - 1, 10)
+
+# PDB datotetke, DCD trajektorije, proteini
+data  <- list(
+    pdb     = list.files(paths$pdb,  pattern = ".pdb", full.names = TRUE),
+    traj    = list.files(paths$traj, pattern = ".dcd", full.names = TRUE),
+    domains = read.csv(paths$domains)
+)
+
 n_all <- nrow(data$domains)
+n_replicates <- 3
 
-# target dir
-target <- file.path("atlas_db", "COM")
+target <- here::here("atlas_db", "COM")
 if (!dir.exists(target)) dir.create(target, recursive = TRUE)
 
-# * csv z imenom {protein}_com_dist.csv
+# ------------------------------------------------------------------------------
+# * vrne indekse aminokislin, ki sestavljajo domeno glede na start in end
+#   stolpca
+# TODO: implement this
+dom_inds <- function(dom_df) {
+  inds <- c()
+  for
+}
+
+# * ustvari CSVje z imeni {protein}_dist.csv
 # * stolpci R1-R3
-# * vsaka vrstica vsebuje razdaljo med masnima centroma domen v trenutnem frame-u
+# * vsaka vrstica vsebuje razdaljo med masnima centroma domen trenutnega framea
 #
 # frame R1 R2 R3
 # 1     x  x  x
@@ -29,13 +47,16 @@ run <- function(i) {
     protein <- data$domains$protein[i]
 
     dcdfiles <- grep(protein, data$traj, value = TRUE)
+    stopifnot(length(dcdfiles) == 3)
+
     pdbfile <- grep(protein, data$pdb, value = TRUE)
-    assertthat::are_equal(length(dcdfiles), 3)
-    assertthat::are_equal(length(pdbfile), 1)
+    stopifnot(length(pdbfile) == 1)
 
     pdb <- read.pdb(pdbfile, verbose = FALSE)
 
-    domain_bounds <- data$domains[i, -1] |> unlist()
+    # BUG: posodobi logiko ker je lahko več vrstic na domeno, dom_inds()
+    dom1_inds <- data$domains[i, -1] |> unlist()
+    # BUG: posodobi logiko ker je lahko več vrstic na domeno
 
     # določi kje sta domeni, ignoriraj vodike pri selekciji
     inds_a <- atom.select(pdb, "noh", resno = domain_bounds[1]:domain_bounds[2])
@@ -52,7 +73,7 @@ run <- function(i) {
 
     n_frames <- max(nrow(r1), nrow(r2), nrow(r3))
 
-    # nimajo vsi enako število frame-ov
+    # nimajo vsi enako število frame-ov for some reason
     # na koncu skopira zadnjo vrstico da se zapolni do željene velikosti
     pad_replicate <- function(replicate, target_len) {
         cur_len <- nrow(replicate)
@@ -110,8 +131,6 @@ run_replicate <- function(dcdfile, pdb, inds_a, inds_b, mass_a, mass_b) {
         sqrt()
 }
 
-### main #####################################################################
-
-n_cores <- max(detectCores() - 1, 10)
+# ------------------------------------------------------------------------------
 cat("using", n_cores, "cores\n")
-mclapply(1:n_all, run, mc.cores = n_cores)
+invisible(mclapply(1:n_all, run, mc.cores = n_cores))
