@@ -3,13 +3,13 @@
 # xtc trajektorije pretvori v dcd format
 #
 # python dependency: https://mdtraj.org/1.9.4/mdconvert.html
-# trenutna verzija mdtraj: 1.11.1.post1, "pip list"
 #
 # sprejme ime xtc datoteke skozi stdin, da lahko uporabim xargs
-# s skripto. Po kreiranju dcd datoteke izbriše xtc datoteko,
-# da se ne zapolni celoten disk. Potreboval bom samo dcd.
-# 
-# najprej aktiviraj .venv okolje zaradi mdconvert
+# s skripto.
+# --------------------------------------------------------------
+mdconvert -h &> /dev/null || echo "mdconvert missing. run 'uv tool install
+mdconvert'"
+
 # --------------------------------------------------------------
 function _validate_input
     if not test -f "$_flag_value"
@@ -27,7 +27,7 @@ end
 
 # --------------------------------------------------------------
 set xtcfile "$_flag_input"
-set pdb_dir "$ROOT/atlas_db/PDB"
+set pdb_dir "$ROOT/atlas_db/PDB_chained"
 set traj_dir "$ROOT/atlas_db/trajectories"
 
 # --------------------------------------------------------------
@@ -55,7 +55,6 @@ function process_xtc -a name
         return 1
     end
 
-    rm "$name"
     echo "$base_name: done"
 end
 
