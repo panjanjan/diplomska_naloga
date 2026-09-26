@@ -8,7 +8,7 @@
 /atlas_db/analysis/*
 /atlas_db/trajectories/*
 
-/outputs/COM_gmx/*
+/outputs/COM/*
 /outputs/PAI/*
 /outputs/PSD/*
 /outputs/RMSF/*
@@ -22,7 +22,7 @@
 !atlas_db/analysis/
 !atlas_db/trajectories/
 
-!outputs/COM_gmx/
+!outputs/COM/
 !outputs/PAI/
 !outputs/PSD/
 !outputs/RMSF/
@@ -35,7 +35,7 @@
 !atlas_db/analysis/1dd3_A*
 !atlas_db/trajectories/1dd3_A*
 
-!outputs/COM_gmx/1dd3_A*
+!outputs/COM/1dd3_A*
 !outputs/PAI/1dd3_A*
 !outputs/PSD/1dd3_A*
 !outputs/RMSF/1dd3_A*
