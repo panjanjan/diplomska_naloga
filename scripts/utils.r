@@ -10,7 +10,8 @@ paths <- list(
     dist        = here::here("outputs", "COM"),
     angles      = here::here("outputs", "PAI"),
     atlas_rmsf  = here::here("atlas_db", "RMSF"),
-    rmsf        = here::here("outputs", "RMSF")
+    rmsf        = here::here("outputs", "RMSF"),
+    psd         = here::here("outputs", "PSD")
 )
 
 # ustvari inverted window za plottanje
