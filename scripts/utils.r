@@ -42,3 +42,16 @@ pdb_from_trajectory <- function(traj, pdb) {
     )
     for (i in 1:10) cat("ne pozabi dodat na .gitignore!!!!!!!!!!!!!!!!!!\n")
 }
+
+load_protein <- function(protein, replicate) {
+    pdb <- paths$pdb |>
+        list.files(pattern = protein, full.names = TRUE) |>
+        read.pdb(verbose = FALSE)
+    dcd <- paths$traj |>
+        list.files(
+            pattern = paste0("^", protein, "_R", replicate, "\\.dcd$"),
+            full.names = TRUE
+        ) |>
+        read.dcd(verbose = FALSE)
+    list(pdb = pdb, dcd = dcd)
+}

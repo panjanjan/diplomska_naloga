@@ -62,8 +62,10 @@ abline(h = 0, col = "grey30", lwd = 1)
 # najprej vse ploščine, nato vse črte, da črte ne pridejo pod ploščine
 for (rep_col in reps) {
   for (name in names(acfs[[rep_col]])) {
-    area(lags, acfs[[rep_col]][[name]],
-         adjustcolor(cols[[rep_col]], alpha.f = fill_alpha))
+    area(
+      lags, acfs[[rep_col]][[name]],
+      adjustcolor(cols[[rep_col]], alpha.f = fill_alpha)
+    )
   }
 }
 for (rep_col in reps) {
