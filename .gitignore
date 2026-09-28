@@ -66,3 +66,4 @@ __pycache__
 /TEST/*
 /outputs/polyzymd/*
 AGENTS.md
+/scripts/rust_md/*
