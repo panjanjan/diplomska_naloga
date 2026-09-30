@@ -8,6 +8,8 @@
 /atlas_db/analysis/*
 /atlas_db/trajectories/*
 
+/outputs/ACF/*
+/outputs/ACF_detrend/*
 /outputs/COM/*
 /outputs/PAI/*
 /outputs/PSD/*
@@ -22,6 +24,8 @@
 !atlas_db/analysis/
 !atlas_db/trajectories/
 
+!outputs/ACF/
+!outputs/ACF_detrend/
 !outputs/COM/
 !outputs/PAI/
 !outputs/PSD/
@@ -35,6 +39,8 @@
 !atlas_db/analysis/1dd3_A*
 !atlas_db/trajectories/1dd3_A*
 
+!outputs/ACF/1dd3_A*
+!outputs/ACF_detrend/1dd3_A*
 !outputs/COM/1dd3_A*
 !outputs/PAI/1dd3_A*
 !outputs/PSD/1dd3_A*

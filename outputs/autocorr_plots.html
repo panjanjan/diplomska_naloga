@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Avtokorelacije razdalj - relativno glede na prvi frame</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .row { display: flex; align-items: center;
+               margin-bottom: 30px;
+               border-bottom: 1px solid #ccc;
+               padding-bottom: 10px; }
+        .protein-label { width: 100px; font-weight: bold;
+                         flex-shrink: 0; }
+        .img-container { display: flex; flex-grow: 1;
+                         justify-content: space-around; }
+        .img-container div { text-align: center; width: 32%; }
+        img { width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <h1>Avtokorelacije razdalj - relativno glede na prvi frame</h1>
+    <div class="row">
+        <div class="protein-label">16pk_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/16pk_A_bb_acf.png" alt="16pk_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/16pk_A_ca_acf.png" alt="16pk_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/16pk_A_noh_acf.png" alt="16pk_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1dd3_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1dd3_A_bb_acf.png" alt="1dd3_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1dd3_A_ca_acf.png" alt="1dd3_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1dd3_A_noh_acf.png" alt="1dd3_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1dj0_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1dj0_B_bb_acf.png" alt="1dj0_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1dj0_B_ca_acf.png" alt="1dj0_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1dj0_B_noh_acf.png" alt="1dj0_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1dlj_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1dlj_A_bb_acf.png" alt="1dlj_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1dlj_A_ca_acf.png" alt="1dlj_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1dlj_A_noh_acf.png" alt="1dlj_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1e7l_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1e7l_B_bb_acf.png" alt="1e7l_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1e7l_B_ca_acf.png" alt="1e7l_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1e7l_B_noh_acf.png" alt="1e7l_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1fn9_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1fn9_B_bb_acf.png" alt="1fn9_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1fn9_B_ca_acf.png" alt="1fn9_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1fn9_B_noh_acf.png" alt="1fn9_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1g38_D</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1g38_D_bb_acf.png" alt="1g38_D BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1g38_D_ca_acf.png" alt="1g38_D CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1g38_D_noh_acf.png" alt="1g38_D NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1jq5_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1jq5_A_bb_acf.png" alt="1jq5_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1jq5_A_ca_acf.png" alt="1jq5_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1jq5_A_noh_acf.png" alt="1jq5_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1k5n_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1k5n_A_bb_acf.png" alt="1k5n_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1k5n_A_ca_acf.png" alt="1k5n_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1k5n_A_noh_acf.png" alt="1k5n_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1ls1_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1ls1_A_bb_acf.png" alt="1ls1_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1ls1_A_ca_acf.png" alt="1ls1_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1ls1_A_noh_acf.png" alt="1ls1_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1lsl_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1lsl_A_bb_acf.png" alt="1lsl_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1lsl_A_ca_acf.png" alt="1lsl_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1lsl_A_noh_acf.png" alt="1lsl_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1m5q_I</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1m5q_I_bb_acf.png" alt="1m5q_I BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1m5q_I_ca_acf.png" alt="1m5q_I CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1m5q_I_noh_acf.png" alt="1m5q_I NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1m5q_Z</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1m5q_Z_bb_acf.png" alt="1m5q_Z BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1m5q_Z_ca_acf.png" alt="1m5q_Z CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1m5q_Z_noh_acf.png" alt="1m5q_Z NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1n7z_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1n7z_B_bb_acf.png" alt="1n7z_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1n7z_B_ca_acf.png" alt="1n7z_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1n7z_B_noh_acf.png" alt="1n7z_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1nij_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1nij_A_bb_acf.png" alt="1nij_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1nij_A_ca_acf.png" alt="1nij_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1nij_A_noh_acf.png" alt="1nij_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1nns_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1nns_A_bb_acf.png" alt="1nns_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1nns_A_ca_acf.png" alt="1nns_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1nns_A_noh_acf.png" alt="1nns_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1nty_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1nty_A_bb_acf.png" alt="1nty_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1nty_A_ca_acf.png" alt="1nty_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1nty_A_noh_acf.png" alt="1nty_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1o98_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1o98_A_bb_acf.png" alt="1o98_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1o98_A_ca_acf.png" alt="1o98_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1o98_A_noh_acf.png" alt="1o98_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1qcs_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1qcs_A_bb_acf.png" alt="1qcs_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1qcs_A_ca_acf.png" alt="1qcs_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1qcs_A_noh_acf.png" alt="1qcs_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1qlm_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1qlm_A_bb_acf.png" alt="1qlm_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1qlm_A_ca_acf.png" alt="1qlm_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1qlm_A_noh_acf.png" alt="1qlm_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1rl6_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1rl6_A_bb_acf.png" alt="1rl6_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1rl6_A_ca_acf.png" alt="1rl6_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1rl6_A_noh_acf.png" alt="1rl6_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1rrm_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1rrm_A_bb_acf.png" alt="1rrm_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1rrm_A_ca_acf.png" alt="1rrm_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1rrm_A_noh_acf.png" alt="1rrm_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1t7v_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1t7v_A_bb_acf.png" alt="1t7v_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1t7v_A_ca_acf.png" alt="1t7v_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1t7v_A_noh_acf.png" alt="1t7v_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1tez_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1tez_B_bb_acf.png" alt="1tez_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1tez_B_ca_acf.png" alt="1tez_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1tez_B_noh_acf.png" alt="1tez_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1tzw_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1tzw_A_bb_acf.png" alt="1tzw_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1tzw_A_ca_acf.png" alt="1tzw_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1tzw_A_noh_acf.png" alt="1tzw_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1uha_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1uha_A_bb_acf.png" alt="1uha_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1uha_A_ca_acf.png" alt="1uha_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1uha_A_noh_acf.png" alt="1uha_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1vaj_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1vaj_A_bb_acf.png" alt="1vaj_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1vaj_A_ca_acf.png" alt="1vaj_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1vaj_A_noh_acf.png" alt="1vaj_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1vct_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1vct_A_bb_acf.png" alt="1vct_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1vct_A_ca_acf.png" alt="1vct_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1vct_A_noh_acf.png" alt="1vct_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1vk1_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1vk1_A_bb_acf.png" alt="1vk1_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1vk1_A_ca_acf.png" alt="1vk1_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1vk1_A_noh_acf.png" alt="1vk1_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1wlg_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1wlg_A_bb_acf.png" alt="1wlg_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1wlg_A_ca_acf.png" alt="1wlg_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1wlg_A_noh_acf.png" alt="1wlg_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1y6i_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1y6i_A_bb_acf.png" alt="1y6i_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1y6i_A_ca_acf.png" alt="1y6i_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1y6i_A_noh_acf.png" alt="1y6i_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1y7t_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1y7t_B_bb_acf.png" alt="1y7t_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1y7t_B_ca_acf.png" alt="1y7t_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1y7t_B_noh_acf.png" alt="1y7t_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1yqe_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1yqe_A_bb_acf.png" alt="1yqe_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1yqe_A_ca_acf.png" alt="1yqe_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1yqe_A_noh_acf.png" alt="1yqe_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1zjc_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1zjc_A_bb_acf.png" alt="1zjc_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1zjc_A_ca_acf.png" alt="1zjc_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1zjc_A_noh_acf.png" alt="1zjc_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">1zxx_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1zxx_A_bb_acf.png" alt="1zxx_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1zxx_A_ca_acf.png" alt="1zxx_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/1zxx_A_noh_acf.png" alt="1zxx_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2bbr_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2bbr_A_bb_acf.png" alt="2bbr_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2bbr_A_ca_acf.png" alt="2bbr_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2bbr_A_noh_acf.png" alt="2bbr_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2bjq_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2bjq_A_bb_acf.png" alt="2bjq_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2bjq_A_ca_acf.png" alt="2bjq_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2bjq_A_noh_acf.png" alt="2bjq_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2bln_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2bln_B_bb_acf.png" alt="2bln_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2bln_B_ca_acf.png" alt="2bln_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2bln_B_noh_acf.png" alt="2bln_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2cxi_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2cxi_A_bb_acf.png" alt="2cxi_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2cxi_A_ca_acf.png" alt="2cxi_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2cxi_A_noh_acf.png" alt="2cxi_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2cxi_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2cxi_B_bb_acf.png" alt="2cxi_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2cxi_B_ca_acf.png" alt="2cxi_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2cxi_B_noh_acf.png" alt="2cxi_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2d1l_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2d1l_A_bb_acf.png" alt="2d1l_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2d1l_A_ca_acf.png" alt="2d1l_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2d1l_A_noh_acf.png" alt="2d1l_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2d5b_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2d5b_A_bb_acf.png" alt="2d5b_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2d5b_A_ca_acf.png" alt="2d5b_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2d5b_A_noh_acf.png" alt="2d5b_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2ehq_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2ehq_A_bb_acf.png" alt="2ehq_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2ehq_A_ca_acf.png" alt="2ehq_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2ehq_A_noh_acf.png" alt="2ehq_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2ex2_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2ex2_A_bb_acf.png" alt="2ex2_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2ex2_A_ca_acf.png" alt="2ex2_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2ex2_A_noh_acf.png" alt="2ex2_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2gg6_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2gg6_A_bb_acf.png" alt="2gg6_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2gg6_A_ca_acf.png" alt="2gg6_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2gg6_A_noh_acf.png" alt="2gg6_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2gqt_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2gqt_A_bb_acf.png" alt="2gqt_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2gqt_A_ca_acf.png" alt="2gqt_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2gqt_A_noh_acf.png" alt="2gqt_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2gwm_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2gwm_A_bb_acf.png" alt="2gwm_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2gwm_A_ca_acf.png" alt="2gwm_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2gwm_A_noh_acf.png" alt="2gwm_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2gwn_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2gwn_A_bb_acf.png" alt="2gwn_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2gwn_A_ca_acf.png" alt="2gwn_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2gwn_A_noh_acf.png" alt="2gwn_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2h2z_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2h2z_A_bb_acf.png" alt="2h2z_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2h2z_A_ca_acf.png" alt="2h2z_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2h2z_A_noh_acf.png" alt="2h2z_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2jhf_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2jhf_B_bb_acf.png" alt="2jhf_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2jhf_B_ca_acf.png" alt="2jhf_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2jhf_B_noh_acf.png" alt="2jhf_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2qia_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2qia_A_bb_acf.png" alt="2qia_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2qia_A_ca_acf.png" alt="2qia_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2qia_A_noh_acf.png" alt="2qia_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2r31_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2r31_A_bb_acf.png" alt="2r31_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2r31_A_ca_acf.png" alt="2r31_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2r31_A_noh_acf.png" alt="2r31_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2rbk_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2rbk_A_bb_acf.png" alt="2rbk_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2rbk_A_ca_acf.png" alt="2rbk_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2rbk_A_noh_acf.png" alt="2rbk_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2rij_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2rij_A_bb_acf.png" alt="2rij_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2rij_A_ca_acf.png" alt="2rij_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2rij_A_noh_acf.png" alt="2rij_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2v9m_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2v9m_A_bb_acf.png" alt="2v9m_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2v9m_A_ca_acf.png" alt="2v9m_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2v9m_A_noh_acf.png" alt="2v9m_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2vfq_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2vfq_A_bb_acf.png" alt="2vfq_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2vfq_A_ca_acf.png" alt="2vfq_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2vfq_A_noh_acf.png" alt="2vfq_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2wlt_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2wlt_A_bb_acf.png" alt="2wlt_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2wlt_A_ca_acf.png" alt="2wlt_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2wlt_A_noh_acf.png" alt="2wlt_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2wr8_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2wr8_A_bb_acf.png" alt="2wr8_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2wr8_A_ca_acf.png" alt="2wr8_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2wr8_A_noh_acf.png" alt="2wr8_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2wzb_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2wzb_A_bb_acf.png" alt="2wzb_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2wzb_A_ca_acf.png" alt="2wzb_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2wzb_A_noh_acf.png" alt="2wzb_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2x49_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2x49_A_bb_acf.png" alt="2x49_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2x49_A_ca_acf.png" alt="2x49_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2x49_A_noh_acf.png" alt="2x49_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2yjg_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2yjg_A_bb_acf.png" alt="2yjg_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2yjg_A_ca_acf.png" alt="2yjg_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2yjg_A_noh_acf.png" alt="2yjg_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">2yp8_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2yp8_A_bb_acf.png" alt="2yp8_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2yp8_A_ca_acf.png" alt="2yp8_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/2yp8_A_noh_acf.png" alt="2yp8_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3b4w_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3b4w_A_bb_acf.png" alt="3b4w_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3b4w_A_ca_acf.png" alt="3b4w_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3b4w_A_noh_acf.png" alt="3b4w_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3b9q_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3b9q_A_bb_acf.png" alt="3b9q_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3b9q_A_ca_acf.png" alt="3b9q_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3b9q_A_noh_acf.png" alt="3b9q_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3bpt_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3bpt_A_bb_acf.png" alt="3bpt_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3bpt_A_ca_acf.png" alt="3bpt_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3bpt_A_noh_acf.png" alt="3bpt_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3bqk_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3bqk_A_bb_acf.png" alt="3bqk_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3bqk_A_ca_acf.png" alt="3bqk_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3bqk_A_noh_acf.png" alt="3bqk_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3cml_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3cml_A_bb_acf.png" alt="3cml_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3cml_A_ca_acf.png" alt="3cml_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3cml_A_noh_acf.png" alt="3cml_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3d3y_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3d3y_A_bb_acf.png" alt="3d3y_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3d3y_A_ca_acf.png" alt="3d3y_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3d3y_A_noh_acf.png" alt="3d3y_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3djl_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3djl_A_bb_acf.png" alt="3djl_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3djl_A_ca_acf.png" alt="3djl_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3djl_A_noh_acf.png" alt="3djl_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3g3s_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3g3s_B_bb_acf.png" alt="3g3s_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3g3s_B_ca_acf.png" alt="3g3s_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3g3s_B_noh_acf.png" alt="3g3s_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3gqv_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3gqv_A_bb_acf.png" alt="3gqv_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3gqv_A_ca_acf.png" alt="3gqv_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3gqv_A_noh_acf.png" alt="3gqv_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3hdj_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3hdj_B_bb_acf.png" alt="3hdj_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3hdj_B_ca_acf.png" alt="3hdj_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3hdj_B_noh_acf.png" alt="3hdj_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3hlz_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3hlz_A_bb_acf.png" alt="3hlz_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3hlz_A_ca_acf.png" alt="3hlz_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3hlz_A_noh_acf.png" alt="3hlz_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3hlz_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3hlz_B_bb_acf.png" alt="3hlz_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3hlz_B_ca_acf.png" alt="3hlz_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3hlz_B_noh_acf.png" alt="3hlz_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3hol_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3hol_A_bb_acf.png" alt="3hol_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3hol_A_ca_acf.png" alt="3hol_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3hol_A_noh_acf.png" alt="3hol_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3ib5_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3ib5_A_bb_acf.png" alt="3ib5_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3ib5_A_ca_acf.png" alt="3ib5_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3ib5_A_noh_acf.png" alt="3ib5_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3igz_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3igz_B_bb_acf.png" alt="3igz_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3igz_B_ca_acf.png" alt="3igz_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3igz_B_noh_acf.png" alt="3igz_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3jsy_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3jsy_B_bb_acf.png" alt="3jsy_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3jsy_B_ca_acf.png" alt="3jsy_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3jsy_B_noh_acf.png" alt="3jsy_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3k29_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3k29_A_bb_acf.png" alt="3k29_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3k29_A_ca_acf.png" alt="3k29_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3k29_A_noh_acf.png" alt="3k29_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3lyf_D</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3lyf_D_bb_acf.png" alt="3lyf_D BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3lyf_D_ca_acf.png" alt="3lyf_D CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3lyf_D_noh_acf.png" alt="3lyf_D NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3n8u_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3n8u_A_bb_acf.png" alt="3n8u_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3n8u_A_ca_acf.png" alt="3n8u_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3n8u_A_noh_acf.png" alt="3n8u_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3oyv_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3oyv_A_bb_acf.png" alt="3oyv_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3oyv_A_ca_acf.png" alt="3oyv_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3oyv_A_noh_acf.png" alt="3oyv_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3wa1_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3wa1_A_bb_acf.png" alt="3wa1_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3wa1_A_ca_acf.png" alt="3wa1_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3wa1_A_noh_acf.png" alt="3wa1_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3wkx_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3wkx_A_bb_acf.png" alt="3wkx_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3wkx_A_ca_acf.png" alt="3wkx_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3wkx_A_noh_acf.png" alt="3wkx_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">3wwh_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3wwh_A_bb_acf.png" alt="3wwh_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3wwh_A_ca_acf.png" alt="3wwh_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/3wwh_A_noh_acf.png" alt="3wwh_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4a3p_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4a3p_A_bb_acf.png" alt="4a3p_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4a3p_A_ca_acf.png" alt="4a3p_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4a3p_A_noh_acf.png" alt="4a3p_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4adn_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4adn_A_bb_acf.png" alt="4adn_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4adn_A_ca_acf.png" alt="4adn_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4adn_A_noh_acf.png" alt="4adn_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4bt9_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4bt9_A_bb_acf.png" alt="4bt9_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4bt9_A_ca_acf.png" alt="4bt9_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4bt9_A_noh_acf.png" alt="4bt9_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4cdp_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4cdp_A_bb_acf.png" alt="4cdp_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4cdp_A_ca_acf.png" alt="4cdp_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4cdp_A_noh_acf.png" alt="4cdp_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4cjn_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4cjn_A_bb_acf.png" alt="4cjn_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4cjn_A_ca_acf.png" alt="4cjn_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4cjn_A_noh_acf.png" alt="4cjn_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4e40_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4e40_A_bb_acf.png" alt="4e40_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4e40_A_ca_acf.png" alt="4e40_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4e40_A_noh_acf.png" alt="4e40_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4ea9_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4ea9_A_bb_acf.png" alt="4ea9_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4ea9_A_ca_acf.png" alt="4ea9_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4ea9_A_noh_acf.png" alt="4ea9_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4fch_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4fch_B_bb_acf.png" alt="4fch_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4fch_B_ca_acf.png" alt="4fch_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4fch_B_noh_acf.png" alt="4fch_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4fhr_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4fhr_B_bb_acf.png" alt="4fhr_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4fhr_B_ca_acf.png" alt="4fhr_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4fhr_B_noh_acf.png" alt="4fhr_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4gv2_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4gv2_A_bb_acf.png" alt="4gv2_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4gv2_A_ca_acf.png" alt="4gv2_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4gv2_A_noh_acf.png" alt="4gv2_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4jgi_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4jgi_A_bb_acf.png" alt="4jgi_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4jgi_A_ca_acf.png" alt="4jgi_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4jgi_A_noh_acf.png" alt="4jgi_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4jgi_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4jgi_B_bb_acf.png" alt="4jgi_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4jgi_B_ca_acf.png" alt="4jgi_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4jgi_B_noh_acf.png" alt="4jgi_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4kk7_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4kk7_A_bb_acf.png" alt="4kk7_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4kk7_A_ca_acf.png" alt="4kk7_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4kk7_A_noh_acf.png" alt="4kk7_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4lq4_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4lq4_A_bb_acf.png" alt="4lq4_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4lq4_A_ca_acf.png" alt="4lq4_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4lq4_A_noh_acf.png" alt="4lq4_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4mb5_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4mb5_A_bb_acf.png" alt="4mb5_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4mb5_A_ca_acf.png" alt="4mb5_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4mb5_A_noh_acf.png" alt="4mb5_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4mp8_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4mp8_A_bb_acf.png" alt="4mp8_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4mp8_A_ca_acf.png" alt="4mp8_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4mp8_A_noh_acf.png" alt="4mp8_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4o87_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4o87_A_bb_acf.png" alt="4o87_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4o87_A_ca_acf.png" alt="4o87_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4o87_A_noh_acf.png" alt="4o87_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4reo_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4reo_A_bb_acf.png" alt="4reo_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4reo_A_ca_acf.png" alt="4reo_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4reo_A_noh_acf.png" alt="4reo_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4wt3_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4wt3_A_bb_acf.png" alt="4wt3_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4wt3_A_ca_acf.png" alt="4wt3_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4wt3_A_noh_acf.png" alt="4wt3_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4ywk_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4ywk_A_bb_acf.png" alt="4ywk_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4ywk_A_ca_acf.png" alt="4ywk_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4ywk_A_noh_acf.png" alt="4ywk_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">4ywk_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4ywk_B_bb_acf.png" alt="4ywk_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4ywk_B_ca_acf.png" alt="4ywk_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/4ywk_B_noh_acf.png" alt="4ywk_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">5gof_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5gof_A_bb_acf.png" alt="5gof_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5gof_A_ca_acf.png" alt="5gof_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5gof_A_noh_acf.png" alt="5gof_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">5h7w_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5h7w_B_bb_acf.png" alt="5h7w_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5h7w_B_ca_acf.png" alt="5h7w_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5h7w_B_noh_acf.png" alt="5h7w_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">5htl_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5htl_A_bb_acf.png" alt="5htl_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5htl_A_ca_acf.png" alt="5htl_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5htl_A_noh_acf.png" alt="5htl_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">5imu_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5imu_A_bb_acf.png" alt="5imu_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5imu_A_ca_acf.png" alt="5imu_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5imu_A_noh_acf.png" alt="5imu_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">5l0r_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5l0r_A_bb_acf.png" alt="5l0r_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5l0r_A_ca_acf.png" alt="5l0r_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5l0r_A_noh_acf.png" alt="5l0r_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">5l0s_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5l0s_A_bb_acf.png" alt="5l0s_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5l0s_A_ca_acf.png" alt="5l0s_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5l0s_A_noh_acf.png" alt="5l0s_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">5lpa_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5lpa_A_bb_acf.png" alt="5lpa_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5lpa_A_ca_acf.png" alt="5lpa_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5lpa_A_noh_acf.png" alt="5lpa_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">5lpa_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5lpa_B_bb_acf.png" alt="5lpa_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5lpa_B_ca_acf.png" alt="5lpa_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5lpa_B_noh_acf.png" alt="5lpa_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">5njb_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5njb_B_bb_acf.png" alt="5njb_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5njb_B_ca_acf.png" alt="5njb_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5njb_B_noh_acf.png" alt="5njb_B NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">5njc_D</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5njc_D_bb_acf.png" alt="5njc_D BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5njc_D_ca_acf.png" alt="5njc_D CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5njc_D_noh_acf.png" alt="5njc_D NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">5njl_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5njl_A_bb_acf.png" alt="5njl_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5njl_A_ca_acf.png" alt="5njl_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5njl_A_noh_acf.png" alt="5njl_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">5t76_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5t76_A_bb_acf.png" alt="5t76_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5t76_A_ca_acf.png" alt="5t76_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5t76_A_noh_acf.png" alt="5t76_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">5wvo_C</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5wvo_C_bb_acf.png" alt="5wvo_C BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5wvo_C_ca_acf.png" alt="5wvo_C CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5wvo_C_noh_acf.png" alt="5wvo_C NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">5yrt_C</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5yrt_C_bb_acf.png" alt="5yrt_C BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5yrt_C_ca_acf.png" alt="5yrt_C CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5yrt_C_noh_acf.png" alt="5yrt_C NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">5yrv_I</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5yrv_I_bb_acf.png" alt="5yrv_I BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5yrv_I_ca_acf.png" alt="5yrv_I CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/5yrv_I_noh_acf.png" alt="5yrv_I NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">6e5y_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6e5y_A_bb_acf.png" alt="6e5y_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6e5y_A_ca_acf.png" alt="6e5y_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6e5y_A_noh_acf.png" alt="6e5y_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">6h49_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6h49_A_bb_acf.png" alt="6h49_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6h49_A_ca_acf.png" alt="6h49_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6h49_A_noh_acf.png" alt="6h49_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">6h95_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6h95_A_bb_acf.png" alt="6h95_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6h95_A_ca_acf.png" alt="6h95_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6h95_A_noh_acf.png" alt="6h95_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">6kty_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6kty_A_bb_acf.png" alt="6kty_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6kty_A_ca_acf.png" alt="6kty_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6kty_A_noh_acf.png" alt="6kty_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">6ne6_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6ne6_A_bb_acf.png" alt="6ne6_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6ne6_A_ca_acf.png" alt="6ne6_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6ne6_A_noh_acf.png" alt="6ne6_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">6o6y_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6o6y_A_bb_acf.png" alt="6o6y_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6o6y_A_ca_acf.png" alt="6o6y_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6o6y_A_noh_acf.png" alt="6o6y_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">6sdk_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6sdk_A_bb_acf.png" alt="6sdk_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6sdk_A_ca_acf.png" alt="6sdk_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6sdk_A_noh_acf.png" alt="6sdk_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">6xds_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6xds_A_bb_acf.png" alt="6xds_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6xds_A_ca_acf.png" alt="6xds_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6xds_A_noh_acf.png" alt="6xds_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">6xrx_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6xrx_A_bb_acf.png" alt="6xrx_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6xrx_A_ca_acf.png" alt="6xrx_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/6xrx_A_noh_acf.png" alt="6xrx_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">7buy_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7buy_A_bb_acf.png" alt="7buy_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7buy_A_ca_acf.png" alt="7buy_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7buy_A_noh_acf.png" alt="7buy_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">7ccg_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7ccg_A_bb_acf.png" alt="7ccg_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7ccg_A_ca_acf.png" alt="7ccg_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7ccg_A_noh_acf.png" alt="7ccg_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">7dif_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7dif_A_bb_acf.png" alt="7dif_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7dif_A_ca_acf.png" alt="7dif_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7dif_A_noh_acf.png" alt="7dif_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">7egs_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7egs_A_bb_acf.png" alt="7egs_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7egs_A_ca_acf.png" alt="7egs_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7egs_A_noh_acf.png" alt="7egs_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">7jrq_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7jrq_A_bb_acf.png" alt="7jrq_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7jrq_A_ca_acf.png" alt="7jrq_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7jrq_A_noh_acf.png" alt="7jrq_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">7ned_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7ned_A_bb_acf.png" alt="7ned_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7ned_A_ca_acf.png" alt="7ned_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7ned_A_noh_acf.png" alt="7ned_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">7zh9_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7zh9_A_bb_acf.png" alt="7zh9_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7zh9_A_ca_acf.png" alt="7zh9_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/7zh9_A_noh_acf.png" alt="7zh9_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">8b3w_A</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/8b3w_A_bb_acf.png" alt="8b3w_A BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/8b3w_A_ca_acf.png" alt="8b3w_A CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/8b3w_A_noh_acf.png" alt="8b3w_A NOH"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="protein-label">8ezh_B</div>
+        <div class="img-container">
+            <div><p>Backbone</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/8ezh_B_bb_acf.png" alt="8ezh_B BB"></div>
+            <div><p>C-alpha</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/8ezh_B_ca_acf.png" alt="8ezh_B CA"></div>
+            <div><p>Non-H</p><img src="/home/jan/Documents/diplomska_naloga/outputs/ACF/8ezh_B_noh_acf.png" alt="8ezh_B NOH"></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,7 +1,7 @@
 source(here::here("scripts", "utils.r"))
 
 files <- list.files(path = paths$dist, pattern = "_.*.csv", full.names = TRUE)
-target <- here::here("outputs", "ACF")
+target <- here::here("outputs", "ACF_detrend")
 if (!dir.exists(target)) dir.create(target, recursive = TRUE)
 
 # -----------------------------------------------------------------------------
@@ -117,22 +117,22 @@ run <- function(protein) {
   n <- nrow(dist_l[[1]])
   frames <- dist_l[[1]][["frame"]]
 
-  # NOTE: relativno glede na prvi frame
+  # NOTE: detrend
   dist_l <- list(
     noh = data.frame(
-      R1 = dist_l$noh$R1 - dist_l$noh$R1[1],
-      R2 = dist_l$noh$R2 - dist_l$noh$R2[1],
-      R3 = dist_l$noh$R3 - dist_l$noh$R3[1]
+      R1 = dist_l$noh$R1 - mean(dist_l$noh$R1),
+      R2 = dist_l$noh$R2 - mean(dist_l$noh$R2),
+      R3 = dist_l$noh$R3 - mean(dist_l$noh$R3)
     ),
     bb = data.frame(
-      R1 = dist_l$bb$R1 - dist_l$bb$R1[1],
-      R2 = dist_l$bb$R2 - dist_l$bb$R2[1],
-      R3 = dist_l$bb$R3 - dist_l$bb$R3[1]
+      R1 = dist_l$bb$R1 - mean(dist_l$bb$R1),
+      R2 = dist_l$bb$R2 - mean(dist_l$bb$R2),
+      R3 = dist_l$bb$R3 - mean(dist_l$bb$R3)
     ),
     ca = data.frame(
-      R1 = dist_l$ca$R1 - dist_l$ca$R1[1],
-      R2 = dist_l$ca$R2 - dist_l$ca$R2[1],
-      R3 = dist_l$ca$R3 - dist_l$ca$R3[1]
+      R1 = dist_l$ca$R1 - mean(dist_l$ca$R1),
+      R2 = dist_l$ca$R2 - mean(dist_l$ca$R2),
+      R3 = dist_l$ca$R3 - mean(dist_l$ca$R3)
     )
   )
 
