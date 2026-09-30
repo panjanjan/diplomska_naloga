@@ -2,6 +2,8 @@ source(here::here("scripts", "utils.r"))
 
 # prototipiram na proteinu za katerega vem da se nekaj dogaja
 protein <- "1k5n_A"
+sel <- "ca"
+
 files <- list.files(
   path = paths$dist,
   pattern = paste0(protein, "_.*.csv"),
@@ -16,7 +18,7 @@ data <- list(
 
 n <- nrow(data$noh)
 
-aux_acf <- \(x) acf(x - mean(x), lag = n, pl = FALSE)[["acf"]]
+aux_acf <- \(x) acf(x, lag = n, pl = FALSE)[["acf"]]
 
 acf_l <- list(
   lags = seq(0, n - 1),
@@ -37,81 +39,106 @@ acf_l <- list(
   )
 )
 
-str(acf_l)
-
+# -- [plotting] ---------------------------------------------------------------
 rep_colors <- c(R1 = "#ff8e32", R2 = "#cd68bb", R3 = "#51c3cc")
 rep_nums <- names(rep_colors)
-sel <- "ca"
-line_w <- 1
-line_alpha <- 0.2
+line_w <- 2
+line_alpha <- 0.6
+area_alpha <- 0.15
+font_scale <- 1.5
+pic_dims <- c(1496, 1115)
 
-dark_plot()
-par(mfrow = c(2, 1))
-sapply(seq_along(rep_colors), \(i) {
-  dist_vals <- data[[sel]][[rep_nums[i]]]
-  dist_vals <- dist_vals - mean(dist_vals)
-  color <- rep_colors[i]
-  mod_color <- adjustcolor(color, alpha.f = line_alpha)
+plot_sel <- function(sel) {
+  # -- [1. razdalje] ------------------------------------------------------------
+  frames <- data[[sel]][["frame"]]
+  d <- data.frame(
+    R1 = data[[sel]]$R1 - data[[sel]]$R1[1],
+    R2 = data[[sel]]$R2 - data[[sel]]$R2[1],
+    R3 = data[[sel]]$R3 - data[[sel]]$R3[1]
+  )
+
   main <- paste0(
-    "razdalje masnih centrov, protein: ",
+    "Razdalje masnih centrov, protein: ",
     protein,
     ", selekcija: ",
     toupper(sel)
   )
-  if (i == 1) {
-    plot(
-      1:n,
-      dist_vals,
-      type = "n",
-      xlab = "frame",
-      ylab = "razdalja (Å)",
-      main = main,
-      panel.first = grid()
-    )
-  }
-  polygon(
-    x = c(1:n, n:1),
-    y = c(dist_vals, rep(0, length(dist_vals))),
-    col = mod_color,
-    border = color,
-    lwd = line_w
+
+  # da nariše vse replikate skupaj, najde min in max med vsemi replikati za
+  # y-limite
+  margin <- 0
+  ylims = c(min(d) - margin, max(d) + margin)
+
+  par(mfrow = c(2, 1))
+  plot(
+    frames,
+    rep(0, length(frames)),
+    ylim = ylims,
+    type = "n",
+    xlab = "frame",
+    ylab = "razdalja (Å)",
+    main = main,
+    panel.first = grid(),
+    cex = font_scale,
+    frame.plot = FALSE
   )
-  # lines(dist_vals, lwd = line_w, col = color)
-  # points(dist_vals, lwd = 0.05, col = mod_color, pch = 19)
-}) +
-sapply(seq_along(rep_colors), \(i) {
-  acf_vals <- acf_l[[sel]][[rep_nums[i]]]
-  lags <- acf_l$lags
-  color <- rep_colors[i]
-  mod_color <- adjustcolor(color, alpha.f = line_alpha)
-  main <- "avtokorelacije razdalj"
-  if (i == 1) {
-    plot(
-      lags,
-      acf_vals,
-      type = "n",
-      xlab = "zamik",
-      ylab = "ACF",
-      main = main,
-      panel.first = grid()
+  for (i in 1:3) {
+    mod_color <- adjustcolor(rep_colors[i], alpha.f = area_alpha)
+    polygon(
+      x = c(1:n, n:1),
+      y = c(d[, i], rep(0, length(d[, i]))),
+      col = mod_color,
+      border = rep_colors[i],
+      lwd = line_w,
+      cex = font_scale
     )
+    # lines(d[, i], col = mod_color, lwd = line_w)
+    # points(d[, i], col = mod_color, pch = 19, lwd = 1)
   }
-  polygon(
-    x = c(lags, rev(lags)),
-    y = c(acf_vals, rep(0, length(acf_vals))),
-    col = mod_color,
-    border = color,
-    lwd = line_w
+  abline(h = 0)
+
+  # -- [2. avtokorelacije] ------------------------------------------------------
+  sapply(seq_along(rep_colors), \(i) {
+    acf_vals <- acf_l[[sel]][[rep_nums[i]]]
+    lags <- acf_l$lags
+    color <- rep_colors[i]
+    mod_color <- adjustcolor(color, alpha.f = area_alpha)
+    main <- "Avtokorelacije razdalj"
+    if (i == 1) {
+      plot(
+        lags,
+        acf_vals,
+        type = "n",
+        xlab = "zamik",
+        ylab = "ACF",
+        main = main,
+        panel.first = grid(),
+        frame.plot = FALSE,
+        cex = font_scale
+      )
+    }
+    polygon(
+      x = c(lags, rev(lags)),
+      y = c(acf_vals, rep(0, length(acf_vals))),
+      col = mod_color,
+      border = color,
+      lwd = line_w,
+      cex = font_scale
+    )
+  })
+  abline(h = 0)
+  legend(
+    "topright",
+    legend = rep_nums,
+    col = rep_colors,
+    lwd = line_w,
+    pch = 15,
+    pt.cex = 1.6,
+    bty = "n",
+    cex = font_scale
   )
-})
-abline(h = 0, lwd = line_w) +
-legend(
-  "topright",
-  legend = rep_nums,
-  col = rep_colors,
-  lwd = line_w,
-  pch = 15,
-  pt.cex = 1.6,
-  bty = "n",
-  cex = 0.8
-)
+}
+
+png("yo2.png", width = pic_dims[1], height = pic_dims[2])
+plot_sel("ca")
+dev.off()
