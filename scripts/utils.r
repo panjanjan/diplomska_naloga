@@ -46,12 +46,21 @@ pdb_from_trajectory <- function(traj, pdb) {
 load_protein <- function(protein, replicate) {
     pdb <- paths$pdb |>
         list.files(pattern = protein, full.names = TRUE) |>
-        read.pdb(verbose = FALSE)
+        bio3d::read.pdb(verbose = FALSE)
     dcd <- paths$traj |>
         list.files(
             pattern = paste0("^", protein, "_R", replicate, "\\.dcd$"),
             full.names = TRUE
         ) |>
-        read.dcd(verbose = FALSE)
+        bio3d::read.dcd(verbose = FALSE)
     list(pdb = pdb, dcd = dcd)
+}
+
+# * vrne indekse aminokislin, ki sestavljajo i-to domeno
+dom_inds <- function(protein, i) {
+  d <- data$domains[data$domains == protein, ]
+  dom <- d[d$domain == i, ]
+  bounds <- list(start = dom$start, end = dom$end)
+  lapply(1:nrow(dom), \(i) bounds$start[i]:bounds$end[i]) |>
+    unlist()
 }
