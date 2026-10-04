@@ -50,12 +50,12 @@
 # ostalo
 frequencies_units.txt
 /queries/*
-/scripts/scratch.*
-/scripts/sde.r
-/scripts/03_phys/psd_files/*
-/scripts/TODO
-/scripts/rmsf/plot_results.r
-/scripts/*_files
+/src/scratch.*
+/src/sde.r
+/src/03_phys/psd_files/*
+/src/TODO
+/src/rmsf/plot_results.r
+/src/*_files
 pdb_atlas.tar.gz
 1dd3_A_fit_A.*
 3ebh_A_R1.*
@@ -71,7 +71,7 @@ __pycache__
 /TEST/*
 /outputs/polyzymd/*
 AGENTS.md
-/scripts/rust_md/*
+/src/rust_md/*
 *.bak
 yoo.png
 yo2.png

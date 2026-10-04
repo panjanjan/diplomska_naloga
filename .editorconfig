@@ -1,16 +1,18 @@
 root = true
 
+[*]
+trim_trailing_whitespace = true
+indent_style = space
+
 [*.py]
 indent_size = 4
 tab_width = 4
 
-[*]
+[*.r]
 end_of_line = lf
 indent_size = 2
 tab_width = 2
-indent_style = space
 max_line_length = 80
-trim_trailing_whitespace = true
 
 [*.csv]
 max_line_length = 0
