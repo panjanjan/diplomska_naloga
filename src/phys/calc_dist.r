@@ -128,12 +128,13 @@ run_replicate <- function(dcdfile, pdb, inds_d1, inds_d2, mass_d1, mass_d2) {
   dcd <- read.dcd(dcdfile, verbose = FALSE)
 
   # poravnava na prvo domeno
-  aligned <- fit.xyz(
-    fixed = pdb$xyz,
-    mobile = dcd,
-    fixed.inds = inds_d1$xyz,
-    mobile.inds = inds_d1$xyz
-  )
+  # NOTE: ni važno za razdalje, ker preslikaš vse koordinate v neko smer(?)
+  # aligned <- fit.xyz(
+  #   fixed = pdb$xyz,
+  #   mobile = dcd,
+  #   fixed.inds = inds_d1$xyz,
+  #   mobile.inds = inds_d1$xyz
+  # )
 
   rm(dcd)
 

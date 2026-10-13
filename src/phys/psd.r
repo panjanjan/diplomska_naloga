@@ -23,19 +23,20 @@ psd <- function(x) {
   # NOTE: mogoče bi to naredil že v shranjenih razdaljah..?
   x <- x - x[1]
 
-  # frekvenca vzorčenja: kolikokrat na časovno enoto vzorčimo (1 ps)
-  dt_sec <- 1 * 1e-12
+  # frekvenca vzorčenja: reducirane trajektorije imajo ~1000 frame-ov
+  # na 100 ns, torej vzorčimo vsakih 100 ps
+  dt_sec <- 100 * 1e-12
   fs_hz <- 1 / dt_sec # v Hz
 
   # frekvenčni korak: razmik med točkami v frekvenčni domeni
   #
-  # npr. za 100 meritev s frekvenco vzorčenja 1s je najnižja frekvenca, ki jo
+  # npr. za 100 meritev s frekvenco vzorčenja 1 s je najnižja frekvenca, ki jo
   # lahko določimo 0.01 Hz = 1/100 s^-1 <=> 1 cikel na 100 s (samo 1 cikel skozi vse meritve)
   # najvišja frekvenca je enaka velikosti vzorca, n, in je 1 cikel na 1 s <=> 100/100 s^-1 = 1 Hz
   #
-  # za primer 1001 meritev s frekvenco vzorčenja 1 ps (1e-12 s = 1/10000...0 s) je
-  # najnižja določljiva frekvenca 1/1001 ps^-1 = 0.000999001 * 1e+12 = 0.999001 GHz,
-  # najvišja pa 1001/1001 ps^-1 = 1 * 1e+12 Hz = 1 THz (načeloma...)
+  # za primer 1001 meritev s frekvenco vzorčenja 100 ps (1e-10 s) je najnižja
+  # določljiva frekvenca 1/1001 ps^-1 ≈ 1/100 ns = 0.01 GHz,
+  # najvišja (nyquistova) pa fs/2 = 5 GHz, df ≈ 10 MHz
   df <- fs_hz / n
 
   # nyquistova frekvenca (N/2) določa do katere (analizne) frekvence se *aliasing*
@@ -43,9 +44,8 @@ psd <- function(x) {
   half_n <- 1 + floor(n / 2)
   freq <- seq(0, by = df, length.out = half_n)
 
-  # ker merimo 1.001 ns, lahko pretvorimo frekvence iz Hz v ns (nHz...)
-  # 999000999 / s = 999000999 / 1e+9 ns = 0.999001 ns^-1 = 0.999001 nHz
-  freq_ns <- freq / 1e+9
+  # frekvence iz Hz v GHz (1 GHz = 1 cikel na ns)
+  freq_ghz <- freq / 1e+9
 
   # predpostavka DFT je stacionarnost podatkov. odstranjevanje linearnega trenda
   fit <- lm(x ~ seq_along(x))
@@ -63,7 +63,7 @@ psd <- function(x) {
   fft_out <- fft(x_scaled)
   power <- (Mod(fft_out)^2)[1:half_n] |> scale_it()
 
-  data.frame(frequency = freq_ns, power = power)
+  data.frame(frequency = freq_ghz, power = power)
 }
 
 # * csv z imenom {protein}_psd.csv
