@@ -10,6 +10,7 @@
 
 /outputs/ACF/*
 /outputs/ACF_detrend/*
+/outputs/ACF_roots/*
 /outputs/COM/*
 /outputs/PAI/*
 /outputs/PSD/*
@@ -26,6 +27,7 @@
 
 !outputs/ACF/
 !outputs/ACF_detrend/
+!outputs/ACF_roots/
 !outputs/COM/
 !outputs/PAI/
 !outputs/PSD/
@@ -41,6 +43,7 @@
 
 !outputs/ACF/1dd3_A*
 !outputs/ACF_detrend/1dd3_A*
+!outputs/ACF_roots/1dd3_A*
 !outputs/COM/1dd3_A*
 !outputs/PAI/1dd3_A*
 !outputs/PSD/1dd3_A*
@@ -79,3 +82,4 @@ uv.lock
 *.mat
 *.dat
 *.kra
+acf_osc_demo.*

@@ -24,6 +24,7 @@ d <- list.files(
   read.csv()
 
 str(d)
+repls <- grep("R", names(d), value = TRUE)
 
 abs_dist <- \(x, y) abs(x - y)
 err <- \(s) c(mean = mean(s), std = sd(s))
@@ -49,17 +50,20 @@ colnames(res) <- apply(combs, 2, paste, collapse = "-")
 # max  1.2322170 1.2914595 0.8256516
 
 # okej, acf in nato ničle
-acfs <- d[, -1] %>%
-  apply(2, acf, plot = FALSE, lag.max = nrow(d) * 0.5) %>%
-  lapply(., \(x) x$acf) %>%
-  as.data.frame()
+get_acf <- function(df) {
+  df %>%
+    apply(2, acf, plot = FALSE, lag.max = nrow(df) * 0.5) %>%
+    lapply(., \(x) x$acf) %>%
+    as.data.frame()
+}
+acfs <- get_acf(d[, -1])
 
 # najdem indekse, kjer se spremeni predznak ACF
 # vključim prvi indeks
 zeros <- function(x) c(1, which(diff(sign(x)) != 0))
 z <- apply(acfs, 2, zeros)
 
-plot_zeros <- function(r, z, gap = 0) {
+plot_zeros <- function(acfs, r, z, gap = 0, ...) {
   s <- acfs[, r]
   n <- length(s)
 
@@ -67,7 +71,14 @@ plot_zeros <- function(r, z, gap = 0) {
   c <- rep("transparent", n)
   c[z[[r]]] <- "red"
 
-  plot(s, pch = 19, main = r, ylab = "ACF", panel.first = grid(), frame = FALSE)
+  plot(
+    s,
+    pch = 19,
+    main = r,
+    panel.first = grid(),
+    frame = FALSE,
+    ...
+  )
   lines(s)
   points(1:n, rep(0, n), col = c, pch = 19)
   abline(h = 0)
@@ -104,31 +115,106 @@ plot_zeros("R3", z_grp, gap = min_gap)
 
 # rabim vsaj 3 ničle na replikat, tako se mi zdi prav
 # 4 indekse vključeno s prvim
-z_ok <- z_grp[which(unlist(lapply(z_grp, length)) >= 4)]
-repl_ok <- names(z_ok)
+at_least_four <- function(l) {
+  l %>%
+    lapply(\(x) length(x) >= 4) %>%
+    unlist() %>%
+    which() %>%
+    l[.]
+}
+z_ok <- at_least_four(z_grp)
 
 # ali so razdalje med indeksi podobne? dopuščam neko napako
 
 # --- opisne statistike ---
-# CV (coefficient of variation): globalna, opisuje celoten vzorec
-# en osamelec ne popači rezultata
+# CV (coefficient of variation): globalna, opisuje vse razdalje. En osamelec
+# ne popači rezultata.
+# * Visoke vrednosti => sd >> mean => visoka variacija razdalj
+# * Nizke vrednosti ==> sd << mean => nizka variacija - to iščem
 coeff_var <- function(x) sd(x) / mean(x)
 
 # Gap Tolerance: lokalna, vsaka obravnavana razdalja mora ležati znotraj
-# tolerance od povprečja vzorca.
-gap_tol <- function(x, tol = 0.1) abs(x - median(x)) <= tol * median(x)
+# tolerance od povprečja razdalj
+gap_tol <- function(x, tol = 0.3) abs(x - median(x)) <= tol * median(x)
 
-z_stats <- lapply(z_ok, \(x) {
-  dx <- diff(x)
-  data.frame(
-    CV = coeff_var(dx),
-    GT = gap_tol(dx)
-  )
-})
+gap_stats <- function(l, tol) {
+  lapply(l, \(x) {
+    dx <- diff(x)
+    data.frame(
+      CV = coeff_var(dx),
+      GT = gap_tol(dx, tol)
+    )
+  })
+}
 
-z_stats
+z_stats <- gap_stats(z_ok)
 
 # ali so približno enako oddaljeni indeksi...?
-lapply(z_stats, \(x) all(x[, "GT"]))
 
-# TODO: vsi proteini
+# ---- vsi proteini -----
+library(parallel)
+library(viridis)
+
+sel <- "backbone"
+min_gap <- 10
+tolerance <- 0.3
+colors <- viridis(n = 3)
+d <- list.files(
+  path = paths$dist,
+  pattern = sel,
+  full.names = TRUE
+)
+proteins <- read.csv(paths$domains)[, "protein"] |>
+  unique() |>
+  sort()
+out <- here::here("outputs")
+pic_dir <- file.path(out, "ACF_roots")
+if (!dir.exists(pic_dir)) dir.create(pic_dir)
+csv_out <- file.path(out, "autocorr_roots_test.csv")
+
+# protein R1 R2 R3
+# xxxx    T  F  T
+run <- function(protein) {
+  dprot <- grep(protein, d, value = TRUE) |> read.csv()
+  repls <- grep("R", names(dprot), value = TRUE)
+  acfs <- get_acf(dprot[, repls])
+  z <- apply(acfs, 2, zeros)
+  z_grp <- lapply(z, group_zeros, gap = min_gap)
+
+  png(
+    file.path(pic_dir, paste0(protein, "_acf_roots.png")),
+    width = 1500,
+    height = 600,
+    res = 150
+  )
+  par(mfrow = c(1, 3))
+  plot_zeros(acfs, "R1", z_grp, min_gap, xlab = "", ylab = "ACF", col = colors[1])
+  plot_zeros(acfs, "R2", z_grp, min_gap, ylab = "", col = colors[2])
+  plot_zeros(acfs, "R3", z_grp, min_gap, xlab = "", ylab = "", col = colors[3])
+  dev.off()
+
+  z_ok <- at_least_four(z_grp)
+  z_stats <- gap_stats(z_ok, tolerance)
+
+  # recimo, da je 0.2 dobra meja
+  cv_cutoff <- 0.2
+
+  # vrne bool vektor, TRUE če passa z vsemi GT in dobrim CV
+  res <- lapply(z_stats, \(x) all(x$GT) || all(x$CV <= cv_cutoff)) |> unlist()
+  final <- rep(FALSE, 3)
+  names(final) <- repls
+  for (i in seq_along(res)) {
+    final[names(res[i])] <- res[i]
+  }
+
+  data.frame(
+    protein = protein,
+    R1 = final["R1"],
+    R2 = final["R2"],
+    R3 = final["R3"]
+  )
+}
+
+lapply(proteins, run) %>%
+  do.call(rbind, .) %>%
+  write.csv(., csv_out, quote = FALSE, row.names = FALSE)
