@@ -59,9 +59,31 @@ load_protein <- function(protein, replicate) {
 
 # * vrne indekse aminokislin, ki sestavljajo i-to domeno
 dom_inds <- function(protein, i) {
-  d <- data$domains[data$domains == protein, ]
-  dom <- d[d$domain == i, ]
-  bounds <- list(start = dom$start, end = dom$end)
-  lapply(1:nrow(dom), \(i) bounds$start[i]:bounds$end[i]) |>
+  library(magrittr)
+  read.csv(paths$domains) %>%
+    .[.[]$protein == protein, ] %>%
+    .[.[]$domain == i, ] %>%
+    {lapply(1:nrow(.), \(i) .[i, "start"]:.[i, "end"])} %>%
     unlist()
+}
+
+plotseg <- function(d, ...) {
+  # Define data and group assignments for each point
+  n <- length(d)
+  x <- 1:n
+
+  pal <- rainbow(n)
+  pal_mod <- sapply(pal, adjustcolor, alpha.f = 0.2)
+
+  # Create empty plot
+  plot(x, d, type = "n", ...)
+
+  # Loop through each segment (from point i to i+1)
+  for (i in 1:(n - 1)) {
+    # Color segment based on the group of the starting point
+    segments(x[i], d[i], x[i + 1], d[i + 1], col = pal_mod[i], lwd = 2)
+  }
+
+  points(x, d, col = pal, pch = 19)
+  abline(h = mean(d), col = "black", lwd = 1.5, lty = 2)
 }

@@ -34,15 +34,6 @@ target <- here::here("outputs", "COM")
 if (!dir.exists(target)) dir.create(target, recursive = TRUE)
 
 # ------------------------------------------------------------------------------
-# * vrne indekse aminokislin, ki sestavljajo i-to domeno
-dom_inds <- function(protein, i) {
-  d <- data$domains[data$domains == protein, ]
-  dom <- d[d$domain == i, ]
-  bounds <- list(start = dom$start, end = dom$end)
-  lapply(1:nrow(dom), \(i) bounds$start[i]:bounds$end[i]) |>
-    unlist()
-}
-
 # * ustvari CSVje z imeni {protein}_dist.csv
 # * stolpci R1-R3
 # * vsaka vrstica vsebuje razdaljo med masnima centroma domen trenutnega framea
