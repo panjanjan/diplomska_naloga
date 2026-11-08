@@ -27,6 +27,16 @@ dark_plot <- function() {
     )
     plot(1)
 }
+light_plot <- function() {
+    par(
+        bg = "white", # Barva ozadja
+        fg = "black", # Osnovna barva (okvirji in črte)
+        col.axis = "black", # Oznake na oseh (številke)
+        col.lab = "black", # Imeta osi
+        col.main = "black" # Glavni naslov
+    )
+    plot(1)
+}
 
 # ustvari PDB datoteko iz trajektorije proteina
 # traj: abs path do DCD trajektorije
@@ -58,13 +68,19 @@ load_protein <- function(protein, replicate) {
 }
 
 # * vrne indekse aminokislin, ki sestavljajo i-to domeno
-dom_inds <- function(protein, i) {
+dom_inds <- function(prot, i) {
   library(magrittr)
   read.csv(paths$domains) %>%
-    .[.[]$protein == protein, ] %>%
+    .[.[]$protein == prot, ] %>%
     .[.[]$domain == i, ] %>%
-    {lapply(1:nrow(.), \(i) .[i, "start"]:.[i, "end"])} %>%
-    unlist()
+    {
+      d <- .[]
+      lapply(
+        1:nrow(d),
+        \(i) d[i, "start"]:d[i, "end"]
+      ) |>
+        unlist()
+    }
 }
 
 plotseg <- function(d, ...) {
