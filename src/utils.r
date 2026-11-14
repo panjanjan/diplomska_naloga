@@ -27,6 +27,7 @@ dark_plot <- function() {
     )
     plot(1)
 }
+
 light_plot <- function() {
     par(
         bg = "white", # Barva ozadja
@@ -36,6 +37,23 @@ light_plot <- function() {
         col.main = "black" # Glavni naslov
     )
     plot(1)
+}
+
+mplt <- function(s, title) {
+  or <- "orange"
+  plot(
+    s,
+    type = "l",
+    col = "gray",
+    plot.first = grid(),
+    ...
+  )
+  points(
+    s,
+    pch = 19,
+    col = adjustcolor(or, alpha.f = 0.6)
+  )
+  abline(h = mean(s), col = "red", lwd = 1)
 }
 
 # ustvari PDB datoteko iz trajektorije proteina
